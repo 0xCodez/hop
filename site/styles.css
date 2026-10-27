@@ -1,7 +1,7 @@
 /* Hop website. One stylesheet, no build step. Colours are tokens so dark mode only swaps values. */
 
 @property --spin {
-  syntax: '<angle>';
+  syntax: "<angle>";
   inherits: false;
   initial-value: 0deg;
 }
@@ -42,17 +42,16 @@
   --ui-text: rgba(0, 0, 0, 0.22);
   --bar-bg: rgba(242, 244, 250, 0.82);
 
-  --font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI Variable Text', 'Segoe UI', Inter, system-ui,
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", Inter, system-ui, sans-serif;
+  --display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", Inter, system-ui,
     sans-serif;
-  --display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI Variable Display', 'Segoe UI', Inter,
-    system-ui, sans-serif;
-  --mono: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+  --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
   --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
   --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg: #000000;
     --bg-alt: #0c0c0d;
     --card: #1c1c1e;
@@ -83,6 +82,38 @@
     --ui-text: rgba(255, 255, 255, 0.24);
     --bar-bg: rgba(32, 32, 36, 0.86);
   }
+}
+
+:root[data-theme="dark"] {
+  --bg: #000000;
+  --bg-alt: #0c0c0d;
+  --card: #1c1c1e;
+  --raised: #2c2c2e;
+  --text: #f5f5f7;
+  --text-2: #a1a1a6;
+  --text-3: #86868b;
+  --hair: rgba(255, 255, 255, 0.14);
+  --link: #2997ff;
+  --blue: #0071e3;
+  --blue-hover: #0a7ff5;
+  --blue-soft: rgba(41, 151, 255, 0.16);
+  --fill: rgba(118, 118, 128, 0.24);
+  --nav-bg: rgba(22, 22, 23, 0.72);
+  --card-shadow: none;
+  --float-shadow: 0 24px 60px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.4);
+  --iri: linear-gradient(100deg, #4fd1ff 0%, #6b8cff 32%, #b07cff 64%, #ff7ac1 100%);
+
+  --alu-1: #6a6c71;
+  --alu-2: #46484d;
+  --alu-3: #2f3034;
+  --alu-4: #1f2023;
+  --bezel: #050506;
+  --desk-shadow: rgba(0, 0, 0, 0.8);
+  --ui-bg: rgba(38, 38, 42, 0.78);
+  --ui-line: rgba(255, 255, 255, 0.14);
+  --ui-ring: rgba(100, 180, 255, 0.3);
+  --ui-text: rgba(255, 255, 255, 0.24);
+  --bar-bg: rgba(32, 32, 36, 0.86);
 }
 
 *,
@@ -299,6 +330,63 @@ p {
   text-decoration: none;
 }
 
+/* Appearance switch: Auto / Light / Dark, a small segmented control like the app's. */
+.theme-switch {
+  display: flex;
+  padding: 2px;
+  margin-right: -14px;
+  border-radius: 8px;
+  background: var(--fill);
+}
+
+.theme-switch button {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--text-2);
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
+}
+
+.theme-switch button:hover {
+  color: var(--text);
+}
+
+.theme-switch button[aria-checked="true"] {
+  color: var(--text);
+  background: var(--card);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.16),
+    0 0 0 0.5px var(--hair);
+}
+
+.theme-switch button:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 1px;
+}
+
+.theme-switch svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Native controls and scrollbars follow a forced theme too. */
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
 /* ---------- Buttons ---------- */
 
 .cta-row {
@@ -447,8 +535,7 @@ p {
 .stage-glow {
   position: absolute;
   inset: 12% -4% -6%;
-  background:
-    radial-gradient(34% 46% at 28% 66%, rgba(53, 200, 255, 0.22), transparent 70%),
+  background: radial-gradient(34% 46% at 28% 66%, rgba(53, 200, 255, 0.22), transparent 70%),
     radial-gradient(38% 50% at 72% 46%, rgba(155, 92, 255, 0.2), transparent 70%),
     radial-gradient(30% 40% at 52% 30%, rgba(255, 92, 168, 0.12), transparent 70%);
   filter: blur(30px);
@@ -530,7 +617,7 @@ p {
 
 .laptop::after,
 .monitor::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 4%;
   right: 4%;
@@ -602,35 +689,38 @@ p {
 }
 
 .mac-wall {
-  background:
-    radial-gradient(60% 80% at 18% 20%, #9fc4ff, transparent 70%),
-    radial-gradient(55% 70% at 85% 80%, #ffb3d9, transparent 70%),
-    radial-gradient(50% 60% at 70% 15%, #c4b0ff, transparent 70%),
+  background: radial-gradient(60% 80% at 18% 20%, #9fc4ff, transparent 70%),
+    radial-gradient(55% 70% at 85% 80%, #ffb3d9, transparent 70%), radial-gradient(50% 60% at 70% 15%, #c4b0ff, transparent 70%),
     linear-gradient(140deg, #8fb2ff, #c9a4ff 55%, #ffb8d2);
 }
 
 .pc-wall {
-  background:
-    radial-gradient(70% 90% at 50% 110%, #ffffff, transparent 60%),
-    radial-gradient(60% 70% at 20% 30%, #b7dcff, transparent 70%),
-    linear-gradient(165deg, #dbeaff, #9fcbff 50%, #5aa2f5);
+  background: radial-gradient(70% 90% at 50% 110%, #ffffff, transparent 60%),
+    radial-gradient(60% 70% at 20% 30%, #b7dcff, transparent 70%), linear-gradient(165deg, #dbeaff, #9fcbff 50%, #5aa2f5);
 }
 
 @media (prefers-color-scheme: dark) {
-  .mac-wall {
-    background:
-      radial-gradient(60% 80% at 18% 20%, #2c4bb8, transparent 70%),
-      radial-gradient(55% 70% at 85% 80%, #8a2f78, transparent 70%),
-      radial-gradient(50% 60% at 70% 15%, #4b2fa0, transparent 70%),
+  :root:not([data-theme="light"]) .mac-wall {
+    background: radial-gradient(60% 80% at 18% 20%, #2c4bb8, transparent 70%),
+      radial-gradient(55% 70% at 85% 80%, #8a2f78, transparent 70%), radial-gradient(50% 60% at 70% 15%, #4b2fa0, transparent 70%),
       linear-gradient(140deg, #141a4a, #2a1650 55%, #3c1235);
   }
 
-  .pc-wall {
-    background:
-      radial-gradient(70% 90% at 50% 110%, #2a7dff, transparent 60%),
-      radial-gradient(60% 70% at 20% 30%, #123a8a, transparent 70%),
-      linear-gradient(165deg, #050b20, #0b2259 55%, #134aa8);
+  :root:not([data-theme="light"]) .pc-wall {
+    background: radial-gradient(70% 90% at 50% 110%, #2a7dff, transparent 60%),
+      radial-gradient(60% 70% at 20% 30%, #123a8a, transparent 70%), linear-gradient(165deg, #050b20, #0b2259 55%, #134aa8);
   }
+}
+
+:root[data-theme="dark"] .mac-wall {
+  background: radial-gradient(60% 80% at 18% 20%, #2c4bb8, transparent 70%),
+    radial-gradient(55% 70% at 85% 80%, #8a2f78, transparent 70%), radial-gradient(50% 60% at 70% 15%, #4b2fa0, transparent 70%),
+    linear-gradient(140deg, #141a4a, #2a1650 55%, #3c1235);
+}
+
+:root[data-theme="dark"] .pc-wall {
+  background: radial-gradient(70% 90% at 50% 110%, #2a7dff, transparent 60%),
+    radial-gradient(60% 70% at 20% 30%, #123a8a, transparent 70%), linear-gradient(165deg, #050b20, #0b2259 55%, #134aa8);
 }
 
 .menubar {
@@ -666,14 +756,23 @@ p {
 }
 
 @media (prefers-color-scheme: dark) {
-  .menubar {
+  :root:not([data-theme="light"]) .menubar {
     background: rgba(0, 0, 0, 0.25);
   }
 
-  .menubar i,
-  .menubar b {
+  :root:not([data-theme="light"]) .menubar i,
+  :root:not([data-theme="light"]) .menubar b {
     background: rgba(255, 255, 255, 0.55);
   }
+}
+
+:root[data-theme="dark"] .menubar {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+:root[data-theme="dark"] .menubar i,
+:root[data-theme="dark"] .menubar b {
+  background: rgba(255, 255, 255, 0.55);
 }
 
 .dock,
@@ -724,7 +823,7 @@ p {
 
 .dock .hop,
 .taskbar .hop {
-  background: url('assets/icon.png') center / 135% no-repeat;
+  background: url("assets/icon.png") center / 135% no-repeat;
   box-shadow: none;
 }
 
@@ -850,7 +949,7 @@ p {
 }
 
 .caption i::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 50%;
   top: 50%;
@@ -872,7 +971,7 @@ p {
 }
 
 .caption i:nth-child(3)::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 50%;
   top: 50%;
@@ -953,7 +1052,7 @@ p {
 }
 
 .av-peer::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 50%;
   top: calc(100% + 0.35cqw);
@@ -999,7 +1098,7 @@ p {
   width: 1.6cqw;
   height: 1.6cqw;
   flex: none;
-  background: url('assets/icon.png') center / 135% no-repeat;
+  background: url("assets/icon.png") center / 135% no-repeat;
 }
 
 .t-lines {
@@ -1397,13 +1496,12 @@ p {
   width: 7cqw;
   height: 4.9cqw;
   border-radius: 0.7cqw;
-  background:
-    radial-gradient(40% 50% at 70% 72%, #ffe08a, transparent 70%),
+  background: radial-gradient(40% 50% at 70% 72%, #ffe08a, transparent 70%),
     linear-gradient(180deg, #4b6cff 0%, #b35cff 40%, #ff7aa8 70%, #ffb36b 100%);
 }
 
 .file-video .thumb::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: auto 0 0;
   height: 32%;
@@ -1426,7 +1524,7 @@ p {
 }
 
 .play::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 0.8cqw;
   top: 0.55cqw;
@@ -1736,7 +1834,7 @@ p {
 }
 
 .viz-drag .target::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: -12px;
   border-radius: 50%;
@@ -1864,7 +1962,7 @@ p {
 }
 
 .folder .tab::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: -14px;
@@ -1900,8 +1998,7 @@ p {
 
 .p-a {
   rotate: -12deg;
-  background:
-    radial-gradient(40% 50% at 70% 70%, #ffe08a, transparent 70%),
+  background: radial-gradient(40% 50% at 70% 70%, #ffe08a, transparent 70%),
     linear-gradient(180deg, #4b6cff, #b35cff 50%, #ff7aa8);
   animation: fan-a 5s var(--ease) infinite;
 }
@@ -2176,10 +2273,8 @@ p {
 .viz-native {
   overflow: hidden;
   margin-bottom: 0;
-  background:
-    radial-gradient(30% 40% at 25% 40%, #ff7ac1, transparent 70%),
-    radial-gradient(35% 45% at 70% 30%, #4fd1ff, transparent 70%),
-    radial-gradient(40% 50% at 55% 85%, #8a5cff, transparent 70%),
+  background: radial-gradient(30% 40% at 25% 40%, #ff7ac1, transparent 70%),
+    radial-gradient(35% 45% at 70% 30%, #4fd1ff, transparent 70%), radial-gradient(40% 50% at 55% 85%, #8a5cff, transparent 70%),
     radial-gradient(30% 40% at 90% 85%, #ffb36b, transparent 70%);
 }
 
@@ -2257,19 +2352,33 @@ p {
 }
 
 @media (prefers-color-scheme: dark) {
-  .g-mac {
+  :root:not([data-theme="light"]) .g-mac {
     background: rgba(40, 40, 44, 0.5);
   }
 
-  .g-win {
+  :root:not([data-theme="light"]) .g-win {
     background: rgba(32, 32, 32, 0.5);
   }
 
-  .glass {
+  :root:not([data-theme="light"]) .glass {
     box-shadow:
       0 18px 40px rgba(0, 0, 0, 0.5),
       0 0 0 1px rgba(255, 255, 255, 0.12) inset;
   }
+}
+
+:root[data-theme="dark"] .g-mac {
+  background: rgba(40, 40, 44, 0.5);
+}
+
+:root[data-theme="dark"] .g-win {
+  background: rgba(32, 32, 32, 0.5);
+}
+
+:root[data-theme="dark"] .glass {
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.12) inset;
 }
 
 /* ---------- How it works ---------- */
@@ -2364,7 +2473,7 @@ p {
   transition: color 0.25s var(--ease);
 }
 
-.segmented button[aria-selected='true'] {
+.segmented button[aria-selected="true"] {
   color: var(--text);
 }
 
@@ -2387,7 +2496,7 @@ p {
   transition: transform 0.4s cubic-bezier(0.3, 1.2, 0.5, 1);
 }
 
-.segmented[data-active='win'] .seg-thumb {
+.segmented[data-active="win"] .seg-thumb {
   transform: translateX(100%);
 }
 
@@ -2502,7 +2611,7 @@ html:not(.js) .seg-thumb {
 }
 
 .dl-card.is-recommended::after {
-  content: 'Your Mac';
+  content: "Your Mac";
   position: absolute;
   right: 14px;
   top: 14px;
@@ -2533,7 +2642,7 @@ html:not(.js) .seg-thumb {
 }
 
 .dl-file::after {
-  content: ' \2193';
+  content: " \2193";
 }
 
 .tip {
@@ -2574,10 +2683,15 @@ html:not(.js) .seg-thumb {
 }
 
 @media (prefers-color-scheme: dark) {
-  .code {
+  :root:not([data-theme="light"]) .code {
     background: #000;
     box-shadow: inset 0 0 0 1px var(--hair);
   }
+}
+
+:root[data-theme="dark"] .code {
+  background: #000;
+  box-shadow: inset 0 0 0 1px var(--hair);
 }
 
 .code code {
@@ -2591,7 +2705,7 @@ html:not(.js) .seg-thumb {
 }
 
 .code code::before {
-  content: '$ ';
+  content: "$ ";
   color: #86868b;
 }
 
@@ -2662,7 +2776,7 @@ html:not(.js) .seg-thumb {
 }
 
 .faq summary::after {
-  content: '';
+  content: "";
   flex: none;
   width: 28px;
   height: 28px;
@@ -2710,9 +2824,7 @@ html:not(.js) .seg-thumb {
 
 .closer {
   text-align: center;
-  background:
-    radial-gradient(45% 42% at 50% 55%, color-mix(in srgb, #8a5cff 12%, transparent), transparent 70%),
-    var(--bg);
+  background: radial-gradient(45% 42% at 50% 55%, color-mix(in srgb, #8a5cff 12%, transparent), transparent 70%), var(--bg);
 }
 
 .closer-icon {

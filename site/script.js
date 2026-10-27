@@ -137,6 +137,60 @@
     });
   });
 
+  // ---------- Appearance: Auto / Light / Dark ----------
+  // The choice lives on <html data-theme>; the inline script in <head> restores it before first paint.
+  // ?theme=light|dark previews a theme without saving it.
+  const themeSwitch = document.getElementById('themeSwitch');
+  const THEME_COLORS = { light: '#fbfbfd', dark: '#000000' };
+  const themeMetas = [...document.querySelectorAll('meta[name="theme-color"]')];
+  const metaDefaults = themeMetas.map((meta) => meta.content);
+
+  function applyTheme(theme) {
+    if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+    else delete document.documentElement.dataset.theme;
+    // Browser chrome (mobile address bar) follows the forced theme instead of the system one.
+    themeMetas.forEach((meta, i) => {
+      meta.content = THEME_COLORS[theme] || metaDefaults[i];
+    });
+    themeSwitch.querySelectorAll('button').forEach((button) => {
+      const on = button.dataset.theme === (theme || 'auto');
+      button.setAttribute('aria-checked', String(on));
+      button.tabIndex = on ? 0 : -1;
+    });
+  }
+
+  function saveTheme(theme) {
+    try {
+      if (theme === 'auto') localStorage.removeItem('hop-theme');
+      else localStorage.setItem('hop-theme', theme);
+    } catch {
+      // Private mode or blocked storage: the switch still works for this visit.
+    }
+  }
+
+  if (themeSwitch) {
+    const previewed = new URLSearchParams(location.search).get('theme');
+    applyTheme(previewed || document.documentElement.dataset.theme || 'auto');
+
+    themeSwitch.addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-theme]');
+      if (!button) return;
+      applyTheme(button.dataset.theme);
+      saveTheme(button.dataset.theme);
+    });
+
+    // Arrow keys move between the options, like a native segmented control.
+    themeSwitch.addEventListener('keydown', (event) => {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+      event.preventDefault();
+      const buttons = [...themeSwitch.querySelectorAll('button')];
+      const current = buttons.findIndex((b) => b.getAttribute('aria-checked') === 'true');
+      const next = buttons[(current + (event.key === 'ArrowRight' ? 1 : buttons.length - 1)) % buttons.length];
+      next.focus();
+      next.click();
+    });
+  }
+
   // ---------- Nav hairline once the page scrolls ----------
   const nav = document.getElementById('nav');
   const onScroll = () => nav.classList.toggle('scrolled', scrollY > 8);

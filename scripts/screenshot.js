@@ -26,8 +26,9 @@ app.whenReady().then(async () => {
     webPreferences: { offscreen: true },
   });
   const root = path.join(__dirname, '..');
-  if (query.endsWith('.html')) {
-    await win.loadFile(path.join(root, query));
+  const [page, pageQuery] = query.split('?');
+  if (page.endsWith('.html')) {
+    await win.loadFile(path.join(root, page), { search: pageQuery || '' });
   } else {
     await win.loadFile(path.join(root, 'src/renderer/index.html'), { search: query });
   }
