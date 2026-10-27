@@ -1,5 +1,6 @@
 const { app, BrowserWindow, Menu, Notification, Tray, dialog, ipcMain, nativeImage, nativeTheme, shell } = require('electron');
 const crypto = require('node:crypto');
+const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { execFileSync } = require('node:child_process');
@@ -8,12 +9,30 @@ const { Discovery } = require('./discovery');
 const { TransferServer, sendFiles } = require('./transfer');
 
 const OFFER_TIMEOUT_MS = 60 * 1000;
+const SHOW_FALLBACK_MS = 4000;
 const isMac = process.platform === 'darwin';
 const isWindows = process.platform === 'win32';
 
 // HOP_PROFILE=b runs a second, independent copy on the same machine (handy for testing).
 const profile = process.env.HOP_PROFILE;
 if (profile) app.setPath('userData', path.join(app.getPath('appData'), `Hop-${profile}`));
+
+// Startup log, so a launch that silently hangs can be diagnosed:
+// macOS ~/Library/Logs/Hop/main.log, Windows %APPDATA%\Hop\logs\main.log.
+const logFile = path.join(app.getPath('logs'), 'main.log');
+function log(...parts) {
+  const line = `[${new Date().toISOString()}] ${parts.join(' ')}`;
+  console.log(line);
+  try {
+    fs.mkdirSync(path.dirname(logFile), { recursive: true });
+    fs.appendFileSync(logFile, `${line}\n`);
+  } catch {
+    // Logging must never take the app down.
+  }
+}
+process.on('uncaughtException', (err) => log('uncaughtException:', err.stack || err));
+process.on('unhandledRejection', (err) => log('unhandledRejection:', err?.stack || err));
+log(`launch v${app.getVersion()} ${process.platform} ${process.arch} os=${os.release()} electron=${process.versions.electron}`);
 
 let win = null;
 let tray = null;
@@ -89,11 +108,29 @@ function createWindow() {
       sandbox: true,
     },
   });
+  log(`window created, material=${material}`);
   win.setMenuBarVisibility(false);
   win.loadFile(path.join(__dirname, '../renderer/index.html'), {
     query: { platform: process.platform, material },
   });
-  win.once('ready-to-show', () => win.show());
+  win.once('ready-to-show', () => {
+    log('ready-to-show');
+    win.show();
+  });
+  // If the renderer never reports ready (GPU or helper trouble), show the window anyway
+  // rather than leaving the app running with nothing on screen.
+  setTimeout(() => {
+    if (win && !win.isVisible()) {
+      log('ready-to-show did not fire, showing window anyway');
+      win.show();
+    }
+  }, SHOW_FALLBACK_MS);
+  win.webContents.on('did-finish-load', () => log('renderer loaded'));
+  win.webContents.on('did-fail-load', (_e, code, desc) => log('renderer failed to load:', code, desc));
+  win.webContents.on('render-process-gone', (_e, details) => log('renderer gone:', JSON.stringify(details)));
+  win.webContents.on('console-message', (event) => {
+    if (event.level === 'error') log('renderer console:', event.message);
+  });
 
   // Keep running in the background so the other computer can still send files here.
   win.on('close', (event) => {
@@ -247,6 +284,7 @@ function registerIpc() {
 }
 
 async function start() {
+  log('app ready');
   settings = new Settings(app.getPath('userData'), {
     name: defaultDeviceName() + (profile ? ` (${profile})` : ''),
     downloadDir: path.join(app.getPath('downloads'), 'Hop'),
@@ -254,6 +292,7 @@ async function start() {
 
   server = new TransferServer({ decide, downloadDir: () => settings.get('downloadDir') });
   const port = await server.start();
+  log(`transfer server on port ${port}`);
   server.on('start', (e) => emit({ type: 'receive-start', ...e }));
   server.on('progress', (e) => emit({ type: 'receive-progress', ...e }));
   server.on('failed', (e) => emit({ type: 'receive-failed', ...e }));
@@ -264,8 +303,9 @@ async function start() {
 
   discovery = new Discovery({ ...selfInfo(), port });
   discovery.on('change', (peers) => emit({ type: 'peers', peers }));
-  discovery.on('error', (err) => console.error('discovery:', err.message));
+  discovery.on('error', (err) => log('discovery error:', err.message));
   discovery.start();
+  log('discovery started');
 
   registerIpc();
   createWindow();
@@ -273,10 +313,18 @@ async function start() {
 }
 
 if (!profile && !app.requestSingleInstanceLock()) {
+  log('another Hop is already running; handing over to it');
   app.quit();
 } else {
   app.on('second-instance', showWindow);
-  app.whenReady().then(start);
+  app.on('child-process-gone', (_e, details) => log('child process gone:', JSON.stringify(details)));
+  app.whenReady()
+    .then(start)
+    .catch((err) => {
+      log('startup failed:', err.stack || err);
+      dialog.showErrorBox('Hop не запустился', String(err.stack || err));
+      app.exit(1);
+    });
   app.on('activate', showWindow);
   app.on('before-quit', () => {
     quitting = true;
