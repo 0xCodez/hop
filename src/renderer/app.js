@@ -135,8 +135,9 @@ function layout() {
 
 // ---------- peers ----------
 
+// Ignores nodes still playing their leave animation: those are about to be removed.
 function peerNode(id) {
-  return els.peers.querySelector(`.peer[data-id="${CSS.escape(id)}"]`);
+  return els.peers.querySelector(`.peer:not(.leave)[data-id="${CSS.escape(id)}"]`);
 }
 
 const peerAvatar = (id) => peerNode(id)?.querySelector('.avatar');
@@ -163,8 +164,16 @@ function renderPeers() {
     seen.add(peer.id);
     let node = peerNode(peer.id);
     if (!node) {
-      node = createPeerNode(peer);
-      els.peers.append(node);
+      // A beacon lost on Wi-Fi can make a device drop out and come straight back. If its leave
+      // animation is still running, bring that node back instead of letting it be removed.
+      node = els.peers.querySelector(`.peer.leave[data-id="${CSS.escape(peer.id)}"]`);
+      if (node) {
+        node.classList.remove('leave');
+        node.classList.add('enter');
+      } else {
+        node = createPeerNode(peer);
+        els.peers.append(node);
+      }
     }
     node.querySelector('.name').textContent = peer.name;
     node.title = `${peer.name} — ${peer.address}`;
@@ -173,7 +182,7 @@ function renderPeers() {
   for (const node of els.peers.querySelectorAll('.peer:not(.leave)')) {
     if (seen.has(node.dataset.id)) continue;
     node.classList.add('leave');
-    node.addEventListener('animationend', (e) => e.target === node && node.remove());
+    node.addEventListener('animationend', (e) => e.target === node && node.classList.contains('leave') && node.remove());
   }
   layout();
   renderHint();
@@ -695,10 +704,9 @@ function handle(event) {
     case 'receive-done': {
       finishIncoming(event);
       const avatar = peerAvatar(event.from.id);
-      if (avatar) {
-        fly(event.paths, centerOf(avatar), els.meAvatar);
-        settleActivity(event.from.id, 'done', 'in');
-      }
+      if (avatar) fly(event.paths, centerOf(avatar), els.meAvatar);
+      // Settle even if the sender is off the radar right now, or it would look busy forever.
+      if (state.activity.get(event.from.id)?.dir === 'in') settleActivity(event.from.id, 'done', 'in');
       break;
     }
     case 'receive-failed':

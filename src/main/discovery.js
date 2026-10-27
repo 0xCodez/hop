@@ -4,7 +4,9 @@ const { EventEmitter } = require('node:events');
 
 const DISCOVERY_PORT = 47800;
 const BEACON_INTERVAL = 1500;
-const PEER_TTL = 5000;
+// Wi-Fi drops broadcast packets, especially under load or when a Mac's radio naps, so allow
+// several missed beacons before a device leaves the radar.
+const PEER_TTL = 10000;
 const PROTOCOL = 'hop/1';
 
 // Every IPv4 broadcast address of the machine's LAN interfaces, plus the global one.
@@ -67,6 +69,13 @@ class Discovery extends EventEmitter {
 
   get(id) {
     return this.peers.get(id);
+  }
+
+  // Traffic from a peer (a transfer in either direction) proves it's alive even when its
+  // beacons are getting lost, so it keeps the peer on the radar too.
+  touch(id) {
+    const peer = this.peers.get(id);
+    if (peer) peer.lastSeen = Date.now();
   }
 
   beacon() {

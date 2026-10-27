@@ -236,7 +236,10 @@ function registerIpc() {
       from: selfInfo(),
       paths,
       signal: controller.signal,
-      onProgress: (progress) => emit({ type: 'send-progress', id, peerId, ...progress }),
+      onProgress: (progress) => {
+        discovery.touch(peerId);
+        emit({ type: 'send-progress', id, peerId, ...progress });
+      },
     })
       .then((result) => emit({ type: 'send-done', id, peerId, ...result }))
       .catch((err) =>
@@ -322,8 +325,14 @@ async function start() {
   server = new TransferServer({ decide, downloadDir: () => settings.get('downloadDir') });
   const port = await server.start();
   log(`transfer server on port ${port}`);
-  server.on('start', (e) => emit({ type: 'receive-start', ...e }));
-  server.on('progress', (e) => emit({ type: 'receive-progress', ...e }));
+  server.on('start', (e) => {
+    discovery.touch(e.from.id);
+    emit({ type: 'receive-start', ...e });
+  });
+  server.on('progress', (e) => {
+    discovery.touch(e.from.id);
+    emit({ type: 'receive-progress', ...e });
+  });
   server.on('failed', (e) => emit({ type: 'receive-failed', ...e }));
   server.on('done', (e) => {
     emit({ type: 'receive-done', ...e });

@@ -117,6 +117,16 @@ if (!window.hop) {
           setInterval(fire, 3200);
         }, 600);
       }
+      // The peer drops out for a moment (a lost beacon on Wi-Fi) and comes back mid-animation,
+      // then a transfer from it finishes while it's briefly off the radar.
+      if (scenario === 'flap') {
+        setTimeout(() => emit({ type: 'peers', peers: [] }), 1500);
+        setTimeout(() => emit({ type: 'peers', peers: [peer] }), 1550);
+        setTimeout(() => emit({ type: 'receive-start', id: 'flap', from: peer, fileCount: 1, totalBytes: 1000 }), 2500);
+        setTimeout(() => emit({ type: 'peers', peers: [] }), 2800);
+        setTimeout(() => emit({ type: 'receive-done', id: 'flap', from: peer, fileCount: 1, totalBytes: 1000, paths: [`${downloads}${sep}notes.md`] }), 3400);
+        setTimeout(() => emit({ type: 'peers', peers: [peer] }), 3500);
+      }
       if (scenario === 'drag') setTimeout(() => simulateDrag(0), 500);
       if (scenario === 'drop') setTimeout(() => simulateDrag(900), 400);
       if (scenario === 'pick') setTimeout(() => document.querySelector('.peer')?.click(), 500);

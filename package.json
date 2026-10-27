@@ -1,7 +1,7 @@
 {
   "name": "hop",
   "productName": "Hop",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "AirDrop-style file transfer between Mac and Windows over your local network.",
   "author": "0xCodez",
   "license": "MIT",
