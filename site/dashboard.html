@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Hop Analytics</title>
+    <link rel="icon" type="image/png" href="assets/icon.png" />
+    <link rel="stylesheet" href="dashboard.css" />
+    <script>
+      // Same saved Light / Dark choice as the main site, applied before first paint.
+      try {
+        const theme = localStorage.getItem('hop-theme');
+        if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <!-- Sign in -->
+    <main class="login" id="login" hidden>
+      <form class="login-card" id="loginForm" autocomplete="off">
+        <img src="assets/icon.png" alt="" width="64" height="64" />
+        <h1>Hop Analytics</h1>
+        <p class="muted">Private. Enter the dashboard password.</p>
+        <label class="sr-only" for="password">Password</label>
+        <input id="password" type="password" placeholder="Password" required autocomplete="current-password" />
+        <button class="btn primary" type="submit">Sign in</button>
+        <p class="login-error" id="loginError" role="alert"></p>
+      </form>
+    </main>
+
+    <!-- Dashboard -->
+    <div class="app" id="app" hidden>
+      <header class="top">
+        <a class="brand" href="./" title="Back to the site">
+          <img src="assets/icon.png" alt="" width="28" height="28" />
+          <span>Hop Analytics</span>
+        </a>
+        <div class="top-actions">
+          <div class="segmented" id="range" role="radiogroup" aria-label="Date range">
+            <button type="button" role="radio" data-days="7">7 days</button>
+            <button type="button" role="radio" data-days="30">30 days</button>
+            <button type="button" role="radio" data-days="90">90 days</button>
+          </div>
+          <button class="btn ghost" type="button" id="refresh" title="Refresh">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.9M13.5 2.5v3h-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            <span class="sr-only">Refresh</span>
+          </button>
+          <button class="btn ghost" type="button" id="signOut">Sign out</button>
+        </div>
+      </header>
+
+      <div class="notice" id="storageNotice" hidden>
+        <strong>Storage isn't connected yet.</strong>
+        Numbers below reset whenever Vercel restarts the function. Connect your Upstash database to the
+        <em>hop</em> project in Vercel → Storage to keep them.
+      </div>
+
+      <section class="kpis" aria-label="Key numbers">
+        <article class="tile hero">
+          <h2>Visitors</h2>
+          <p class="value" id="kVisitors">—</p>
+          <p class="sub" id="kVisitorsSub"></p>
+        </article>
+        <article class="tile">
+          <h2>Downloads</h2>
+          <p class="value" id="kDownloads">—</p>
+          <p class="sub" id="kDownloadsSub"></p>
+        </article>
+        <article class="tile">
+          <h2>Conversion</h2>
+          <p class="value" id="kConversion">—</p>
+          <p class="sub">visitors who downloaded</p>
+        </article>
+        <article class="tile">
+          <h2>Page views</h2>
+          <p class="value" id="kPageviews">—</p>
+          <p class="sub" id="kPageviewsSub"></p>
+        </article>
+        <article class="tile">
+          <h2>Online now</h2>
+          <p class="value"><span class="live-dot" aria-hidden="true"></span><span id="kOnline">—</span></p>
+          <p class="sub">active in the last 5 min</p>
+        </article>
+        <article class="tile">
+          <h2>GitHub downloads</h2>
+          <p class="value" id="kGithub">—</p>
+          <p class="sub" id="kGithubSub">all releases, all time</p>
+        </article>
+      </section>
+
+      <section class="card">
+        <header class="card-head">
+          <div>
+            <h2>Visitors per day</h2>
+            <p class="muted">Unique visitors; hover a day for page views too.</p>
+          </div>
+        </header>
+        <div class="chart" id="visitorsChart"></div>
+        <details class="table-toggle">
+          <summary>Show as table</summary>
+          <div class="table-wrap"><table id="visitorsTable"></table></div>
+        </details>
+      </section>
+
+      <section class="card">
+        <header class="card-head">
+          <div>
+            <h2>Downloads per day</h2>
+            <p class="muted">Clicks on the site's download buttons.</p>
+          </div>
+          <ul class="legend" id="downloadsLegend"></ul>
+        </header>
+        <div class="chart" id="downloadsChart"></div>
+        <details class="table-toggle">
+          <summary>Show as table</summary>
+          <div class="table-wrap"><table id="downloadsTable"></table></div>
+        </details>
+      </section>
+
+      <section class="grid" aria-label="Breakdowns">
+        <article class="card"><h2>Visitors' systems</h2><ol class="bars" id="systems"></ol></article>
+        <article class="card"><h2>Sources</h2><ol class="bars" id="sources"></ol></article>
+        <article class="card"><h2>Countries</h2><ol class="bars" id="countries"></ol></article>
+        <article class="card"><h2>Download buttons</h2><ol class="bars" id="places"></ol></article>
+        <article class="card"><h2>Devices</h2><ol class="bars" id="devices"></ol></article>
+        <article class="card"><h2>Actions</h2><ol class="bars" id="clicks"></ol></article>
+      </section>
+
+      <section class="card">
+        <header class="card-head">
+          <div>
+            <h2>GitHub releases</h2>
+            <p class="muted">Installer downloads counted by GitHub, including people who never visited the site.</p>
+          </div>
+        </header>
+        <div class="table-wrap"><table id="releasesTable"></table></div>
+      </section>
+
+      <footer class="foot muted" id="footer"></footer>
+    </div>
+
+    <div class="tooltip" id="tooltip" role="status" hidden></div>
+    <script src="dashboard.js"></script>
+  </body>
+</html>

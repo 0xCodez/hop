@@ -191,6 +191,56 @@
     });
   }
 
+  // ---------- Analytics for the private dashboard ----------
+  // Cookieless: the server only keeps daily counts. Only the Vercel deploy has the API,
+  // so the GitHub Pages mirror and local files skip it.
+  const tracking = location.protocol === 'https:' && !location.hostname.endsWith('github.io');
+  function track(event) {
+    if (!tracking) return;
+    const body = JSON.stringify(event);
+    try {
+      if (navigator.sendBeacon && navigator.sendBeacon('/api/track', body)) return;
+    } catch {
+      // fall through to fetch
+    }
+    fetch('/api/track', { method: 'POST', body, keepalive: true }).catch(() => {});
+  }
+
+  track({
+    t: 'pv',
+    p: location.pathname,
+    r: document.referrer,
+    u: new URLSearchParams(location.search).get('utm_source') || undefined,
+  });
+
+  document.addEventListener('click', (event) => {
+    const link = event.target.closest('a[href]');
+    if (link) {
+      const download = link.href.match(/\/releases\/latest\/download\/Hop-(mac-arm64|mac-x64|windows-x64)\./);
+      if (download) {
+        const place = link.closest('#install') ? 'install' : link.closest('#top') ? 'hero' : link.closest('[data-cta]') ? 'footer' : 'other';
+        track({ t: 'dl', k: download[1], w: place });
+      } else if (/github\.com\/0xCodez\/hop\/releases\/?$/.test(link.href)) {
+        track({ t: 'click', k: 'all-releases' });
+      } else if (/github\.com\/0xCodez\/hop\/?$/.test(link.href)) {
+        track({ t: 'click', k: 'github' });
+      }
+      return;
+    }
+    const button = event.target.closest('button');
+    if (!button) return;
+    if (button.matches('[data-copy]')) track({ t: 'click', k: 'copy-xattr' });
+    else if (button.id === 'tab-mac' || button.id === 'tab-win') track({ t: 'click', k: button.id });
+    else if (button.matches('#themeSwitch button')) track({ t: 'click', k: `theme-${button.dataset.theme}` });
+  });
+
+  // Which questions people open is a hint at what the install steps don't answer.
+  document.querySelectorAll('#faq details').forEach((details, i) => {
+    details.addEventListener('toggle', () => {
+      if (details.open) track({ t: 'click', k: `faq-${i + 1}` });
+    });
+  });
+
   // ---------- Nav hairline once the page scrolls ----------
   const nav = document.getElementById('nav');
   const onScroll = () => nav.classList.toggle('scrolled', scrollY > 8);
