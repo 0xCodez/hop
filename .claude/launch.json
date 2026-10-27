@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "ui-demo",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--yes", "http-server@14.1.1", "src/renderer", "-p", "5317", "-c-1", "--silent"],
+      "port": 5317
+    }
+  ]
+}

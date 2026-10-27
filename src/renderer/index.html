@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hop</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="titlebar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>Hop</span>
+      </div>
+    </header>
+
+    <main class="stage" id="stage">
+      <div class="ripples" aria-hidden="true"><span></span><span></span><span></span></div>
+
+      <div class="me" id="me">
+        <div class="avatar me-avatar" id="meAvatar"></div>
+        <button class="me-name" id="meName" title="Нажмите, чтобы переименовать"></button>
+        <input class="me-name-input" id="meNameInput" maxlength="40" spellcheck="false" hidden />
+        <div class="me-caption">Это устройство</div>
+      </div>
+
+      <div class="peers" id="peers"></div>
+
+      <div class="hint" id="hint">
+        <div class="hint-title" id="hintTitle"></div>
+        <div class="hint-sub" id="hintSub"></div>
+      </div>
+    </main>
+
+    <section class="sheets" id="sheets" aria-live="polite"></section>
+
+    <footer class="footer">
+      <span class="footer-label">Сохраняется в</span>
+      <button class="link" id="openDownloads"></button>
+      <span class="dot">·</span>
+      <button class="link subtle" id="changeDir">Изменить</button>
+      <span class="dot" id="trustedDot" hidden>·</span>
+      <button class="link subtle" id="forgetTrusted" hidden></button>
+    </footer>
+
+    <div class="drop-veil" id="dropVeil" aria-hidden="true">
+      <div class="drop-label" id="dropLabel"></div>
+    </div>
+
+    <script src="demo.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
