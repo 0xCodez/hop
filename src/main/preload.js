@@ -11,6 +11,7 @@ contextBridge.exposeInMainWorld('hop', {
   chooseDownloadDir: () => ipcRenderer.invoke('hop:choose-download-dir'),
   rename: (name) => ipcRenderer.invoke('hop:rename', name),
   forgetTrusted: () => ipcRenderer.invoke('hop:forget-trusted'),
+  setTheme: (theme) => ipcRenderer.invoke('hop:set-theme', theme),
   // Dropped File objects no longer carry .path; Electron resolves it here.
   pathForFile: (file) => webUtils.getPathForFile(file),
   onEvent: (callback) => {

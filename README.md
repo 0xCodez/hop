@@ -2,54 +2,69 @@
 
 <h1 align="center">Hop</h1>
 
-<p align="center">Передача файлов между Mac и Windows в стиле AirDrop: перетащил на устройство — хоп, и файл уже там.</p>
+<p align="center">AirDrop-style file sharing between your Mac and your PC. Drag a file onto the other computer — hop, it's there.</p>
 
-## Как это работает
+<p align="center"><a href="https://0xcodez.github.io/hop/"><b>Download</b></a> · <a href="https://github.com/0xCodez/hop/releases">Releases</a></p>
 
-- Запустите Hop на обоих компьютерах в **одной сети Wi-Fi / LAN**. Они найдут друг друга сами и появятся на радаре.
-- **Перетащите** файлы или папки на значок другого компьютера (или нажмите на него и выберите файлы).
-- На втором компьютере появится карточка «Принять / Отклонить». Галочка «Всегда принимать с этого устройства» убирает вопрос для ваших собственных компьютеров.
-- Полученное сохраняется в `Загрузки/Hop` (папку можно поменять внизу окна). Одинаковые имена не перезаписываются: появится `photo (1).jpg`.
-- Закрытие окна не выключает Hop: на Mac он остаётся в Dock, на Windows — в трее, и продолжает принимать файлы.
+## How it works
 
-Файлы идут напрямую между компьютерами по локальной сети, без интернета и облаков.
+- Open Hop on both computers on the **same Wi-Fi or LAN**. They find each other automatically and appear on the radar.
+- **Drag** files or folders onto the other computer (or click it to choose files).
+- The other side gets an **Accept / Decline** card. Tick "Always accept from this device" for your own machines.
+- Received files land in `Downloads/Hop` (changeable at the bottom of the window). Nothing is overwritten — a second copy becomes `photo (1).jpg`.
+- Closing the window keeps Hop running (in the Dock on macOS, in the tray on Windows) so it can still receive.
 
-## Установка
+Files go straight from one computer to the other over your local network. No cloud, no account.
 
-Готовые установщики собирает GitHub Actions: вкладка **Actions → Build → Run workflow**, затем скачайте артефакты `Hop-macOS` (`.dmg`) и `Hop-Windows` (`.exe`). Если запушить тег вида `v0.1.0`, они появятся ещё и в **Releases**.
+## Install
 
-**macOS.** Приложение пока не подписано сертификатом Apple, поэтому при первом запуске macOS его заблокирует. После переноса в «Программы» выполните в Терминале:
+Download from the [website](https://0xcodez.github.io/hop/) or the [latest release](https://github.com/0xCodez/hop/releases/latest):
+
+| Platform | File |
+| --- | --- |
+| Mac with Apple silicon (M1–M4) | `Hop-mac-arm64.dmg` |
+| Mac with Intel | `Hop-mac-x64.dmg` |
+| Windows 10/11 | `Hop-windows-x64.exe` |
+
+**macOS.** Hop isn't notarized by Apple yet, so the first launch is blocked. Drag Hop to Applications, then either run
 
 ```bash
 xattr -cr /Applications/Hop.app
 ```
 
-Когда macOS спросит про доступ к локальной сети, нажмите «Разрешить».
+or open **System Settings → Privacy & Security** and click **Open Anyway**. Allow Local Network access when asked.
 
-**Windows.** При первом запуске брандмауэр спросит про доступ к сети — разрешите для **частных сетей**. Сеть Wi-Fi в Windows должна быть отмечена как «Частная», иначе Mac не увидит компьютер.
+**Windows.** SmartScreen may warn about an unknown publisher: **More info → Run anyway**. When Windows Firewall asks, allow Hop on **Private networks**, and make sure your Wi-Fi network profile is set to **Private**.
 
-## Разработка
+## Development
 
-Нужен Node.js 22+.
+Requires Node.js 22+.
 
 ```bash
 npm install
-npm start          # запустить приложение
-npm test           # проверка обнаружения и передачи без Electron
-npm run dist       # собрать установщик для текущей ОС
+npm start          # run the app
+npm test           # discovery + transfer smoke test, no Electron needed
+npm run dist       # build an installer for the current OS
 ```
 
-Две копии на одном компьютере (удобно для проверки): `HOP_PROFILE=b npm start`.
+- Two copies on one machine (handy for testing): `HOP_PROFILE=b npm start`.
+- UI screenshots with demo data: `npx electron scripts/screenshot.js out.png "demo=offer&platform=darwin" 1500 dark`.
+- Regenerate the icon: `npx electron scripts/render-icon.js`.
 
-Интерфейс можно открыть в обычном браузере с демо-данными: `npx http-server src/renderer` и затем `index.html?demo=offer`.
+Pushing a tag like `v0.2.0` builds the installers on GitHub Actions and publishes them as a release. The website in `site/` deploys to GitHub Pages on every push to `main`.
 
-## Устройство
+## Under the hood
 
-| Файл | Что делает |
+| File | Role |
 | --- | --- |
-| `src/main/discovery.js` | Поиск устройств: UDP-маяки на порт 47800 каждые 1,5 с |
-| `src/main/transfer.js` | Передача: HTTP-сервер приёма (предложение → файлы потоком) и отправка |
-| `src/main/main.js` | Окно, трей, уведомления, связь интерфейса с сетью |
-| `src/renderer/` | Интерфейс: радар, drag & drop, анимация «прыжка» файла |
+| `src/main/discovery.js` | Finds devices: UDP beacons on port 47800 every 1.5 s |
+| `src/main/transfer.js` | Transfers: HTTP receiver (offer → streamed files) and sender |
+| `src/main/main.js` | Window, tray, notifications, wiring between UI and network |
+| `src/renderer/` | UI: radar, drag & drop, the hop animation |
+| `site/` | The download website |
 
-Шифрования пока нет: Hop рассчитан на домашнюю сеть, и каждый приём подтверждается вручную (кроме доверенных устройств).
+There's no encryption yet: Hop is meant for your home network, and every incoming transfer needs your OK unless you've trusted the device.
+
+## License
+
+[MIT](LICENSE). Hop is not affiliated with Apple Inc. or Microsoft Corporation.

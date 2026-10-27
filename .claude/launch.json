@@ -6,6 +6,12 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["--yes", "http-server@14.1.1", "src/renderer", "-p", "5317", "-c-1", "--silent"],
       "port": 5317
+    },
+    {
+      "name": "site",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--yes", "http-server@14.1.1", "site", "-p", "5318", "-c-1", "--silent"],
+      "port": 5318
     }
   ]
 }

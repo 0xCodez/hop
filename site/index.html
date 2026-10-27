@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Hop — AirDrop-style file sharing for Mac and PC</title>
+    <meta
+      name="description"
+      content="Hop sends files between your Mac and your Windows PC over your own Wi-Fi. Drag, drop, done. Free and open source."
+    />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" href="assets/icon.png" />
+    <link rel="apple-touch-icon" href="assets/icon.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Hop" />
+    <meta property="og:title" content="Hop — Drop it. It’s there." />
+    <meta
+      property="og:description"
+      content="AirDrop-style file sharing between your Mac and your PC. Free and open source."
+    />
+    <meta property="og:url" content="https://0xcodez.github.io/hop/" />
+    <meta property="og:image" content="https://0xcodez.github.io/hop/assets/icon.png" />
+    <meta property="og:image:alt" content="The Hop app icon" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Hop — Drop it. It’s there." />
+    <meta
+      name="twitter:description"
+      content="AirDrop-style file sharing between your Mac and your PC. Free and open source."
+    />
+    <meta name="twitter:image" content="https://0xcodez.github.io/hop/assets/icon.png" />
+
+    <link rel="stylesheet" href="styles.css" />
+    <script>
+      // Set before first paint so scroll-reveal content never flashes in and out.
+      document.documentElement.classList.add('js');
+    </script>
+  </head>
+  <body>
+    <svg width="0" height="0" class="sprite" aria-hidden="true" focusable="false">
+      <symbol id="i-apple" viewBox="0 0 24 24">
+        <path
+          d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"
+        />
+      </symbol>
+      <symbol id="i-windows" viewBox="0 0 24 24">
+        <path d="M0 0h11.4v11.4H0zM12.6 0H24v11.4H12.6zM0 12.6h11.4V24H0zM12.6 12.6H24V24H12.6z" />
+      </symbol>
+      <symbol id="i-github" viewBox="0 0 24 24">
+        <path
+          d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.07 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .32.21.69.82.57A12 12 0 0 0 12 .3"
+        />
+      </symbol>
+      <symbol id="i-laptop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <rect x="4.5" y="5" width="15" height="10.5" rx="1.6" />
+        <path d="M2 18.75h20" />
+      </symbol>
+      <symbol id="i-desktop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <rect x="3" y="3.75" width="18" height="12.5" rx="1.6" />
+        <path d="M12 16.25v3.5M8 20.25h8" />
+      </symbol>
+    </svg>
+
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="nav" id="nav">
+      <div class="nav-inner">
+        <a class="nav-brand" href="#top" aria-label="Hop, back to top">
+          <img src="assets/icon.png" alt="" width="28" height="28" />
+          <span>Hop</span>
+        </a>
+        <nav class="nav-links" aria-label="Sections">
+          <a href="#features">Features</a>
+          <a href="#how">How it works</a>
+          <a href="#install">Install</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+        <a class="nav-cta" href="#install">Download</a>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- Hero -->
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <img class="hero-icon" src="assets/icon.png" alt="Hop app icon" width="112" height="112" />
+          <p class="eyebrow">Hop</p>
+          <h1 id="hero-title" class="hero-title">Drop it.<br /><span class="iridescent">It’s there.</span></h1>
+          <p class="hero-sub">AirDrop-style file sharing between your Mac and your PC. Free and open source.</p>
+
+          <div class="cta-row" data-cta>
+            <a class="btn btn-primary" data-dl="mac" href="https://github.com/0xCodez/hop/releases/latest/download/Hop-mac-arm64.dmg">
+              <svg class="glyph" aria-hidden="true"><use href="#i-apple" /></svg>
+              <span>Download for Mac</span>
+            </a>
+            <a class="btn btn-secondary" data-dl="win" href="https://github.com/0xCodez/hop/releases/latest/download/Hop-windows-x64.exe">
+              <svg class="glyph glyph-win" aria-hidden="true"><use href="#i-windows" /></svg>
+              <span>Download for Windows</span>
+            </a>
+          </div>
+          <p class="cta-note">
+            <span data-mac-note>For Macs with Apple silicon.</span>
+            <span class="nowrap">
+              <a data-mac-alt href="https://github.com/0xCodez/hop/releases/latest/download/Hop-mac-x64.dmg">Intel Mac version</a>
+              <span class="sep" aria-hidden="true">·</span>
+              <a href="https://github.com/0xCodez/hop/releases">All releases</a>
+            </span>
+          </p>
+        </div>
+
+        <div
+          class="stage"
+          role="img"
+          aria-label="Illustration: a video file hops from a laptop to a desktop PC, the PC’s screen glows as it lands, then a document hops back."
+        >
+          <div class="stage-glow"></div>
+          <svg class="trail" viewBox="0 0 100 54" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="trail-grad" x1="0" x2="1" y1="0" y2="0">
+                <stop offset="0" stop-color="#3fc6ff" />
+                <stop offset="0.5" stop-color="#7b6cff" />
+                <stop offset="1" stop-color="#ff6fb5" />
+              </linearGradient>
+            </defs>
+            <path d="M26 34 Q 50 -21 74 20.5" />
+          </svg>
+
+          <!-- Laptop -->
+          <div class="laptop">
+            <div class="halo"></div>
+            <div class="lid">
+              <div class="screen mac">
+                <div class="wall mac-wall"></div>
+                <div class="menubar"><i></i><i></i><i></i><i></i><b></b></div>
+                <div class="win-ui mac-ui">
+                  <div class="ui-bar"><span class="lights"><i></i><i></i><i></i></span><span class="ui-title"></span></div>
+                  <div class="radar">
+                    <span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span>
+                    <span class="av av-me"></span>
+                    <span class="av av-peer p1"></span>
+                  </div>
+                </div>
+                <div class="toast mac-toast"><span class="t-icon"></span><span class="t-lines"><i></i><i></i></span></div>
+                <div class="dock"><i></i><i></i><i class="hop"></i><i></i><i></i></div>
+                <div class="edge"><i></i></div>
+                <div class="ripple"></div>
+              </div>
+            </div>
+            <div class="base"><span class="notch"></span></div>
+          </div>
+
+          <!-- Desktop PC -->
+          <div class="monitor">
+            <div class="halo"></div>
+            <div class="panel">
+              <div class="screen pc">
+                <div class="wall pc-wall"></div>
+                <div class="win-ui pc-ui">
+                  <div class="ui-bar"><span class="ui-title left"></span><span class="caption"><i></i><i></i><i></i></span></div>
+                  <div class="radar">
+                    <span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span>
+                    <span class="av av-me pc-me"></span>
+                    <span class="av av-peer p2"></span>
+                  </div>
+                </div>
+                <div class="toast pc-toast"><span class="t-icon"></span><span class="t-lines"><i></i><i></i></span></div>
+                <div class="taskbar"><i></i><i></i><i class="hop"></i><i></i><i></i></div>
+                <div class="edge"><i></i></div>
+                <div class="ripple"></div>
+              </div>
+            </div>
+            <div class="neck"></div>
+            <div class="foot"></div>
+          </div>
+
+          <!-- The hopping file: x and y are animated on separate elements to trace an arc -->
+          <div class="hop-x">
+            <div class="hop-y">
+              <div class="chip">
+                <div class="file file-video">
+                  <span class="thumb"><span class="play"></span></span>
+                  <span class="name">Vacation.mov</span>
+                </div>
+                <div class="file file-doc">
+                  <span class="thumb"><i></i><i></i><i></i><i></i><b>PDF</b></span>
+                  <span class="name">Notes.pdf</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features -->
+      <section class="section features" id="features" aria-labelledby="features-title">
+        <div class="wrap">
+          <header class="section-head reveal">
+            <p class="kicker">Features</p>
+            <h2 id="features-title">Made for the desk<br />with two computers.</h2>
+          </header>
+
+          <div class="bento">
+            <article class="card span-2 reveal">
+              <div class="card-copy">
+                <h3>Finds nearby devices <span class="hl">automatically.</span></h3>
+                <p>Open Hop on both computers. They spot each other on your network in a second or two. No pairing codes, no sign-in, no setup.</p>
+              </div>
+              <div class="viz viz-radar" aria-hidden="true">
+                <span class="pulse"></span><span class="pulse d2"></span><span class="pulse d3"></span>
+                <span class="vring v1"></span><span class="vring v2"></span>
+                <span class="vme"><svg><use href="#i-laptop" /></svg></span>
+                <span class="vpeer vp1"><span class="vdot c1"></span><em>Work PC</em></span>
+                <span class="vpeer vp2"><span class="vdot c2"></span><em>Studio</em></span>
+                <span class="vpeer vp3"><span class="vdot c3"></span><em>Den PC</em></span>
+              </div>
+            </article>
+
+            <article class="card reveal">
+              <div class="card-copy">
+                <h3>Drag, drop, <span class="hl">done.</span></h3>
+                <p>Drop files onto a device and they’re on their way. Or click it to pick files.</p>
+              </div>
+              <div class="viz viz-drag" aria-hidden="true">
+                <span class="target"><span class="vdot c1"></span><em>Work PC</em></span>
+                <span class="dragged">
+                  <span class="mini-file"></span>
+                  <svg class="cursor" viewBox="0 0 24 24"><path d="M5 2.5v17.2l4.3-4.2 2.9 6.6 2.7-1.2-2.8-6.4h6.1z" /></svg>
+                </span>
+              </div>
+            </article>
+
+            <article class="card reveal">
+              <div class="card-copy">
+                <h3>Whole <span class="hl">folders.</span></h3>
+                <p>Send a folder and it arrives as a folder, structure intact. Nothing is ever overwritten.</p>
+              </div>
+              <div class="viz viz-folder" aria-hidden="true">
+                <span class="paper p-a"></span><span class="paper p-b"></span><span class="paper p-c"></span>
+                <span class="folder"><span class="tab"></span><span class="front"></span></span>
+                <span class="folder-meta">Project · 248 items</span>
+              </div>
+            </article>
+
+            <article class="card span-2 reveal">
+              <div class="card-copy">
+                <h3>Ask first. Or <span class="hl">trust.</span></h3>
+                <p>Every incoming transfer waits for your OK. For your own computers, tick “Always accept” once and files just land.</p>
+              </div>
+              <div class="viz viz-offer" aria-hidden="true">
+                <div class="sheet">
+                  <div class="sheet-top">
+                    <span class="vdot c1"></span>
+                    <div>
+                      <strong>Work PC</strong>
+                      <span>wants to send 3 photos · 24 MB</span>
+                    </div>
+                  </div>
+                  <div class="sheet-trust"><span class="switch"><span></span></span>Always accept from Work PC</div>
+                  <div class="sheet-actions"><span class="b-decline">Decline</span><span class="b-accept">Accept</span></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="card span-2 reveal">
+              <div class="card-copy">
+                <h3>Direct and <span class="hl">private.</span></h3>
+                <p>Files travel straight over your Wi-Fi, from one computer to the other. No cloud in the middle. No account. No upload limits.</p>
+              </div>
+              <div class="viz viz-direct" aria-hidden="true">
+                <span class="node n-mac"><svg><use href="#i-laptop" /></svg></span>
+                <span class="wire"><span class="packet"></span><span class="packet k2"></span><span class="packet k3"></span></span>
+                <span class="node n-pc"><svg><use href="#i-desktop" /></svg></span>
+                <span class="no-cloud">
+                  <svg viewBox="0 0 48 32"><path d="M14 27h22a8 8 0 0 0 1-15.9A11 11 0 0 0 16 9.5 8.8 8.8 0 0 0 14 27z" /><path class="slash" d="M8 4l32 25" /></svg>
+                </span>
+              </div>
+            </article>
+
+            <article class="card reveal">
+              <div class="card-copy">
+                <h3>Feels <span class="hl">native.</span></h3>
+                <p>Vibrancy on the Mac. Acrylic on Windows 11. Hop looks at home on both.</p>
+              </div>
+              <div class="viz viz-native" aria-hidden="true">
+                <span class="glass g-mac"><span class="lights"><i></i><i></i><i></i></span><em>Vibrancy</em></span>
+                <span class="glass g-win"><span class="caption"><i></i><i></i><i></i></span><em>Acrylic</em></span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- How it works -->
+      <section class="section how" id="how" aria-labelledby="how-title">
+        <div class="wrap">
+          <header class="section-head reveal">
+            <p class="kicker">How it works</p>
+            <h2 id="how-title">Three steps.<br />No manual required.</h2>
+          </header>
+          <ol class="steps">
+            <li class="step reveal">
+              <span class="step-num">1</span>
+              <h3>Open Hop on both.</h3>
+              <p>Your Mac and your PC appear on each other’s radar, as long as they share a network.</p>
+            </li>
+            <li class="step reveal">
+              <span class="step-num">2</span>
+              <h3>Drop a file on a device.</h3>
+              <p>Files, photos, whole folders. Drag them onto the other computer’s avatar.</p>
+            </li>
+            <li class="step reveal">
+              <span class="step-num">3</span>
+              <h3>Accept. It’s there.</h3>
+              <p>The other side taps Accept and the files land in Downloads/Hop, at full Wi-Fi speed.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Install -->
+      <section class="section install" id="install" aria-labelledby="install-title">
+        <div class="wrap narrow">
+          <header class="section-head reveal">
+            <p class="kicker">Install</p>
+            <h2 id="install-title">Up and running<br />in a minute.</h2>
+            <p class="lede">Hop isn’t signed by Apple or Microsoft yet, so each system asks you to confirm once. Here’s exactly what to click.</p>
+          </header>
+
+          <div class="tabs reveal">
+            <div class="segmented" role="tablist" aria-label="Choose your platform">
+              <button role="tab" id="tab-mac" aria-controls="panel-mac" aria-selected="true" data-tab="mac">
+                macOS
+              </button>
+              <button role="tab" id="tab-win" aria-controls="panel-win" aria-selected="false" tabindex="-1" data-tab="win">
+                Windows
+              </button>
+              <span class="seg-thumb" aria-hidden="true"></span>
+            </div>
+
+            <div class="panel-card" role="tabpanel" id="panel-mac" aria-labelledby="tab-mac" tabindex="0">
+              <ol class="install-steps">
+                <li>
+                  <h3>Download the version for your Mac.</h3>
+                  <div class="dl-pair">
+                    <a class="dl-card" data-arch="arm64" href="https://github.com/0xCodez/hop/releases/latest/download/Hop-mac-arm64.dmg">
+                      <span class="dl-kind">Apple silicon</span>
+                      <span class="dl-detail">M1, M2, M3, M4 and later</span>
+                      <span class="dl-file">Hop-mac-arm64.dmg</span>
+                    </a>
+                    <a class="dl-card" data-arch="x64" href="https://github.com/0xCodez/hop/releases/latest/download/Hop-mac-x64.dmg">
+                      <span class="dl-kind">Intel</span>
+                      <span class="dl-detail">Macs with an Intel processor</span>
+                      <span class="dl-file">Hop-mac-x64.dmg</span>
+                    </a>
+                  </div>
+                  <p class="tip">Not sure? Open the Apple menu &gt; <b>About This Mac</b>. If it says <b>Chip: Apple M…</b>, pick Apple silicon. If it says <b>Processor: Intel</b>, pick Intel.</p>
+                </li>
+                <li>
+                  <h3>Drag Hop to Applications.</h3>
+                  <p>Open the downloaded .dmg and drag the Hop icon onto the Applications folder.</p>
+                </li>
+                <li>
+                  <h3>Let it open the first time.</h3>
+                  <p>Because Hop isn’t notarized by Apple yet, macOS blocks the first launch. Clear it one of two ways:</p>
+                  <div class="option">
+                    <span class="option-label">Option A — Terminal</span>
+                    <div class="code">
+                      <code id="xattr">xattr -cr /Applications/Hop.app</code>
+                      <button class="copy" type="button" data-copy="#xattr" aria-label="Copy command">Copy</button>
+                    </div>
+                    <p>Paste into Terminal, press Return, then open Hop as usual.</p>
+                  </div>
+                  <div class="option">
+                    <span class="option-label">Option B — System Settings</span>
+                    <p>Try to open Hop once, then go to <b>System Settings &gt; Privacy &amp; Security</b>, scroll down and click <b>Open Anyway</b>. Confirm with your password.</p>
+                  </div>
+                </li>
+                <li>
+                  <h3>Allow Local Network access.</h3>
+                  <p>When macOS asks whether Hop may find devices on your local network, click <b>Allow</b>. Missed it? Turn Hop on in <b>System Settings &gt; Privacy &amp; Security &gt; Local Network</b>.</p>
+                </li>
+              </ol>
+            </div>
+
+            <div class="panel-card" role="tabpanel" id="panel-win" aria-labelledby="tab-win" tabindex="0">
+              <ol class="install-steps">
+                <li>
+                  <h3>Download and run the installer.</h3>
+                  <div class="dl-pair single">
+                    <a class="dl-card" href="https://github.com/0xCodez/hop/releases/latest/download/Hop-windows-x64.exe">
+                      <span class="dl-kind">Windows 10 and 11</span>
+                      <span class="dl-detail">64-bit installer</span>
+                      <span class="dl-file">Hop-windows-x64.exe</span>
+                    </a>
+                  </div>
+                  <p>Hop installs in a few seconds and opens on its own.</p>
+                </li>
+                <li>
+                  <h3>Get past SmartScreen.</h3>
+                  <p>If Windows says <b>“Windows protected your PC”</b>, click <b>More info</b>, then <b>Run anyway</b>. It appears because Hop isn’t code-signed yet.</p>
+                </li>
+                <li>
+                  <h3>Allow it through the firewall.</h3>
+                  <p>When Windows Defender Firewall asks, make sure <b>Private networks</b> is checked and click <b>Allow</b>.</p>
+                </li>
+                <li>
+                  <h3>Set your Wi-Fi to Private.</h3>
+                  <p>Windows hides your PC on Public networks. Open <b>Settings</b> &gt; <b>Network &amp; internet</b> &gt; <b class="nowrap">Wi-Fi</b>, choose your network and set <b>Network profile type</b> to <b>Private network</b>.</p>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="section faq" id="faq" aria-labelledby="faq-title">
+        <div class="wrap narrow">
+          <header class="section-head reveal">
+            <p class="kicker">FAQ</p>
+            <h2 id="faq-title">Questions, answered.</h2>
+          </header>
+          <div class="faq-list reveal">
+            <details>
+              <summary>My computers don’t see each other. What now?</summary>
+              <div class="answer">
+                <ul>
+                  <li><b>Same network.</b> Both computers must be on the same Wi-Fi or wired network. A mix of Wi-Fi and Ethernet on the same router is fine.</li>
+                  <li><b>Firewall.</b> On Windows, allow Hop on Private networks and set your network profile to Private (see Install). On the Mac, allow Local Network access.</li>
+                  <li><b>VPN.</b> A VPN can route local traffic away from your network. Pause it and try again.</li>
+                  <li><b>Guest Wi-Fi.</b> Guest networks, many office networks and routers with “client isolation” or “AP isolation” stop devices from seeing each other. Use your main network.</li>
+                </ul>
+                <p>Hop finds devices with small broadcasts on UDP port 47800, so that port must not be blocked.</p>
+              </div>
+            </details>
+            <details>
+              <summary>Where do received files go?</summary>
+              <div class="answer">
+                <p>Into <b>Downloads/Hop</b>. Click the folder name at the bottom of the Hop window to open it, or click <b>Change</b> to pick another folder. If a file with the same name exists, Hop keeps both.</p>
+              </div>
+            </details>
+            <details>
+              <summary>Is it secure?</summary>
+              <div class="answer">
+                <p>Files never leave your local network, and nothing is stored on a server. Every incoming transfer asks for your OK unless you’ve marked the sender as trusted, and you can forget trusted devices at any time.</p>
+                <p>Transfers aren’t encrypted yet. That’s fine on your home network; avoid using Hop on public Wi-Fi until encryption lands.</p>
+              </div>
+            </details>
+            <details>
+              <summary>Why does my computer show a security warning?</summary>
+              <div class="answer">
+                <p>Hop isn’t code-signed or notarized yet, so macOS and Windows can’t vouch for the developer. The warning appears once; the Install section shows how to get past it. The full source code is on GitHub if you’d rather build it yourself.</p>
+              </div>
+            </details>
+            <details>
+              <summary>Is Hop free?</summary>
+              <div class="answer">
+                <p>Yes. Hop is open source under the MIT License. No ads, no account, no tracking.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- Closing call to action -->
+      <section class="section closer" aria-labelledby="closer-title">
+        <div class="wrap reveal">
+          <img class="closer-icon" src="assets/icon.png" alt="" width="96" height="96" />
+          <h2 id="closer-title">Get Hop.<br /><span class="iridescent">It’s free.</span></h2>
+          <div class="cta-row" data-cta>
+            <a class="btn btn-primary" data-dl="mac" href="https://github.com/0xCodez/hop/releases/latest/download/Hop-mac-arm64.dmg">
+              <svg class="glyph" aria-hidden="true"><use href="#i-apple" /></svg>
+              <span>Download for Mac</span>
+            </a>
+            <a class="btn btn-secondary" data-dl="win" href="https://github.com/0xCodez/hop/releases/latest/download/Hop-windows-x64.exe">
+              <svg class="glyph glyph-win" aria-hidden="true"><use href="#i-windows" /></svg>
+              <span>Download for Windows</span>
+            </a>
+          </div>
+          <p class="cta-note">
+            <span class="nowrap">
+              <a href="https://github.com/0xCodez/hop/releases/latest/download/Hop-mac-x64.dmg">Intel Mac version</a>
+              <span class="sep" aria-hidden="true">·</span>
+              <a href="https://github.com/0xCodez/hop/releases">All releases</a>
+            </span>
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap">
+        <div class="footer-top">
+          <a class="footer-brand" href="#top"><img src="assets/icon.png" alt="" width="20" height="20" />Hop</a>
+          <div class="footer-links">
+            <a href="https://github.com/0xCodez/hop"><svg class="glyph" aria-hidden="true"><use href="#i-github" /></svg>GitHub</a>
+            <a href="https://github.com/0xCodez/hop/releases">Releases</a>
+            <a href="https://github.com/0xCodez/hop/blob/main/LICENSE">MIT License</a>
+          </div>
+        </div>
+        <p class="legal">
+          Hop is not affiliated with, or endorsed by, Apple Inc. or Microsoft Corporation. Apple, the Apple logo, Mac, macOS and
+          AirDrop are trademarks of Apple Inc. Windows and the Windows logo are trademarks of the Microsoft group of companies.
+        </p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

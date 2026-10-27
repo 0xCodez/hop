@@ -1,46 +1,65 @@
 :root {
   color-scheme: light dark;
-  --blue: #007aff;
-  --blue-2: #5ac8fa;
-  --green: #34c759;
+  --blue: #0071e3;
+  --blue-hi: #2997ff;
+  --green: #28b446;
   --red: #ff3b30;
   --text: #1d1d1f;
-  --text-2: rgba(60, 60, 67, 0.62);
-  --text-3: rgba(60, 60, 67, 0.32);
+  --text-2: rgba(29, 29, 31, 0.56);
+  --text-3: rgba(29, 29, 31, 0.28);
   --window: #f5f5f7;
-  --tint: rgba(246, 246, 248, 0.55);
-  --surface: rgba(255, 255, 255, 0.78);
-  --surface-strong: rgba(255, 255, 255, 0.92);
-  --fill: rgba(120, 120, 128, 0.12);
-  --hairline: rgba(0, 0, 0, 0.08);
-  --ripple: rgba(0, 122, 255, 0.28);
-  --shadow: 0 12px 32px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
-  --shadow-avatar: 0 8px 22px rgba(0, 0, 0, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  --window-top: #fbfbfd;
+  --glow: rgba(0, 113, 227, 0.08);
+  --tint: rgba(246, 246, 248, 0.5);
+  --material: rgba(255, 255, 255, 0.72);
+  --material-strong: rgba(255, 255, 255, 0.9);
+  --material-edge: inset 0 0.5px 0 rgba(255, 255, 255, 0.9);
+  --fill: rgba(118, 118, 128, 0.12);
+  --fill-hover: rgba(118, 118, 128, 0.18);
+  --hairline: rgba(0, 0, 0, 0.09);
+  --orbit: rgba(0, 0, 0, 0.055);
+  --wave: rgba(0, 113, 227, 0.22);
+  --shadow: 0 24px 48px -14px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-small: 0 8px 20px -6px rgba(0, 0, 0, 0.18), 0 1px 3px rgba(0, 0, 0, 0.08);
+  --iri: #5ee7ff, #3d8bff, #8b5cff, #ff5ac8, #5ee7ff;
+  --aura-busy: 0.6;
   --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
   --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
   --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --soft-spring: cubic-bezier(0.22, 1.25, 0.36, 1);
   --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --blue: #0a84ff;
-    --blue-2: #64d2ff;
+    --blue-hi: #409cff;
     --green: #30d158;
     --red: #ff453a;
     --text: #f5f5f7;
-    --text-2: rgba(235, 235, 245, 0.62);
-    --text-3: rgba(235, 235, 245, 0.3);
-    --window: #1c1c1e;
-    --tint: rgba(24, 24, 26, 0.5);
-    --surface: rgba(44, 44, 46, 0.78);
-    --surface-strong: rgba(58, 58, 60, 0.94);
-    --fill: rgba(120, 120, 128, 0.24);
+    --text-2: rgba(245, 245, 247, 0.58);
+    --text-3: rgba(245, 245, 247, 0.28);
+    --window: #161618;
+    --window-top: #1e1e20;
+    --glow: rgba(10, 132, 255, 0.12);
+    --tint: rgba(22, 22, 24, 0.5);
+    --material: rgba(44, 44, 46, 0.7);
+    --material-strong: rgba(52, 52, 54, 0.92);
+    --material-edge: inset 0 0.5px 0 rgba(255, 255, 255, 0.12);
+    --fill: rgba(118, 118, 128, 0.24);
+    --fill-hover: rgba(118, 118, 128, 0.32);
     --hairline: rgba(255, 255, 255, 0.1);
-    --ripple: rgba(10, 132, 255, 0.36);
-    --shadow: 0 12px 32px rgba(0, 0, 0, 0.45), 0 1px 3px rgba(0, 0, 0, 0.3);
-    --shadow-avatar: 0 8px 22px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    --orbit: rgba(255, 255, 255, 0.06);
+    --wave: rgba(64, 156, 255, 0.3);
+    --shadow: 0 24px 48px -14px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-small: 0 8px 20px -6px rgba(0, 0, 0, 0.55), 0 1px 3px rgba(0, 0, 0, 0.3);
+    --aura-busy: 0.5;
   }
+}
+
+body.platform-win32 {
+  --font: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
 }
 
 * {
@@ -58,20 +77,21 @@ body {
   grid-template-rows: 52px 1fr auto;
   font-family: var(--font);
   font-size: 13px;
+  letter-spacing: -0.003em;
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   user-select: none;
   overflow: hidden;
   background:
-    radial-gradient(900px 520px at 50% 52%, rgba(10, 132, 255, 0.09), transparent 62%),
-    var(--window);
+    radial-gradient(70% 50% at 50% 58%, var(--glow), transparent 70%),
+    linear-gradient(180deg, var(--window-top), var(--window));
 }
 
 /* With native vibrancy/acrylic the OS paints the blur; we only add a light tint. */
 body.material-vibrancy,
 body.material-acrylic {
   background:
-    radial-gradient(900px 520px at 50% 52%, rgba(10, 132, 255, 0.08), transparent 62%),
+    radial-gradient(70% 50% at 50% 58%, var(--glow), transparent 70%),
     var(--tint);
 }
 
@@ -94,6 +114,7 @@ input:focus-visible {
 
 .titlebar {
   -webkit-app-region: drag;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -102,35 +123,73 @@ input:focus-visible {
 
 body.platform-win32 .titlebar {
   justify-content: flex-start;
-  padding-left: 18px;
+  padding-left: 16px;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 14px;
-  letter-spacing: -0.01em;
+  font-size: 13px;
+  letter-spacing: -0.005em;
 }
 
-.brand-mark {
-  width: 18px;
-  height: 18px;
-  border-radius: 5.5px;
-  background: linear-gradient(160deg, var(--blue-2), var(--blue));
-  box-shadow: inset 0 0.5px 0 rgba(255, 255, 255, 0.5);
-  position: relative;
+.brand-icon {
+  width: 20px;
+  height: 20px;
+  filter: drop-shadow(0 0.5px 1px rgba(0, 0, 0, 0.22));
+  -webkit-user-drag: none;
 }
 
-.brand-mark::after {
-  content: "";
+/* Appearance switch: a small macOS-style segmented control. */
+.theme-switch {
+  -webkit-app-region: no-drag;
   position: absolute;
-  inset: 5px 4px 6px;
-  border: 1.6px solid #fff;
-  border-bottom: 0;
-  border-radius: 8px 8px 0 0;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  display: flex;
+  padding: 2px;
+  border-radius: 8px;
+  background: var(--fill);
+  box-shadow: inset 0 0 0 0.5px var(--hairline);
+}
+
+/* Keep clear of the Windows caption buttons painted by titleBarOverlay. */
+body.platform-win32 .theme-switch {
+  right: calc(100vw - env(titlebar-area-x, 0px) - env(titlebar-area-width, calc(100vw - 150px)) + 10px);
+}
+
+.theme-switch button {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 22px;
+  border-radius: 6px;
+  color: var(--text-2);
+  transition:
+    background 0.2s var(--ease),
+    color 0.2s var(--ease),
+    box-shadow 0.2s var(--ease);
+}
+
+.theme-switch button:hover {
+  color: var(--text);
+}
+
+.theme-switch button[aria-checked="true"] {
+  color: var(--text);
+  background: var(--material-strong);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.14),
+    0 0 0 0.5px var(--hairline);
+}
+
+.theme-switch svg {
+  width: 14px;
+  height: 14px;
 }
 
 /* ---------- stage / radar ---------- */
@@ -140,7 +199,7 @@ body.platform-win32 .titlebar {
   overflow: hidden;
 }
 
-.ripples {
+.radar {
   position: absolute;
   left: 50%;
   top: var(--cy, 50%);
@@ -150,43 +209,67 @@ body.platform-win32 .titlebar {
   transition: top 0.6s var(--spring);
 }
 
-.ripples span {
+.radar .orbit,
+.radar .wave {
   position: absolute;
-  left: -60px;
-  top: -60px;
-  width: 120px;
-  height: 120px;
   border-radius: 50%;
-  border: 1.5px solid var(--ripple);
+}
+
+/* Two still orbits give the radar its shape; the waves breathe out from this device. */
+.radar .orbit {
+  border: 1px solid var(--orbit);
+}
+
+.radar .orbit:nth-child(1) {
+  inset: -96px;
+}
+
+.radar .orbit:nth-child(2) {
+  inset: -168px;
+}
+
+.radar .wave {
+  inset: -58px;
+  border: 1px solid var(--wave);
+  background: radial-gradient(closest-side, transparent 72%, color-mix(in srgb, var(--wave) 40%, transparent));
   opacity: 0;
-  animation: ripple 3.6s var(--ease) infinite;
+  animation: wave 4.2s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
 }
 
-.ripples span:nth-child(2) {
-  animation-delay: 1.2s;
+.radar .wave:nth-of-type(2) {
+  animation-delay: 1.4s;
 }
 
-.ripples span:nth-child(3) {
-  animation-delay: 2.4s;
+.radar .wave:nth-of-type(3) {
+  animation-delay: 2.8s;
 }
 
-@keyframes ripple {
+@keyframes wave {
   0% {
-    transform: scale(0.85);
+    transform: scale(0.9);
     opacity: 0;
   }
-  12% {
+  10% {
     opacity: 1;
   }
   100% {
-    transform: scale(3.6);
+    transform: scale(3.8);
     opacity: 0;
   }
 }
 
-body.dragging .ripples span {
-  animation-duration: 1.8s;
-  border-color: color-mix(in srgb, var(--blue) 55%, transparent);
+body.dragging .radar .wave {
+  animation-duration: 2.1s;
+  border-color: color-mix(in srgb, var(--blue) 50%, transparent);
+}
+
+/* ---------- avatars ---------- */
+
+.tile {
+  position: relative;
+  transition:
+    scale 0.45s var(--soft-spring),
+    translate 0.35s var(--soft-spring);
 }
 
 .avatar {
@@ -195,20 +278,109 @@ body.dragging .ripples span {
   place-items: center;
   border-radius: 50%;
   color: #fff;
-  box-shadow: var(--shadow-avatar);
+  overflow: hidden;
 }
 
-.avatar svg.glyph {
-  width: 46%;
-  height: 46%;
-  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.15));
+/* Glossy cap: a soft reflection across the top of every tile. */
+.avatar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(120% 70% at 50% -8%, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.06) 48%, transparent 62%);
+  pointer-events: none;
+}
+
+.avatar .logo {
+  position: relative;
+  width: 44%;
+  height: 44%;
+  filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.25));
+}
+
+.avatar .logo.apple {
+  width: 42%;
+  height: 42%;
+  margin-top: -5%;
+}
+
+.avatar .logo.windows {
+  width: 36%;
+  height: 36%;
+}
+
+.avatar.darwin {
+  background:
+    radial-gradient(90% 60% at 50% 105%, rgba(120, 120, 130, 0.22), transparent 70%),
+    linear-gradient(180deg, #48484d 0%, #262628 46%, #0d0d0e 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.16),
+    inset 0 -6px 14px rgba(0, 0, 0, 0.35),
+    0 14px 28px -10px rgba(0, 0, 0, 0.5),
+    0 2px 5px rgba(0, 0, 0, 0.16);
+}
+
+.avatar.win32 {
+  background:
+    radial-gradient(90% 60% at 50% 108%, rgba(0, 200, 255, 0.35), transparent 70%),
+    linear-gradient(165deg, #3fb8ff 0%, #0a7ae6 48%, #0352b8 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.2),
+    inset 0 -6px 14px rgba(0, 40, 120, 0.3),
+    0 14px 28px -10px rgba(0, 82, 184, 0.55),
+    0 2px 5px rgba(0, 40, 100, 0.16);
+}
+
+.avatar.other {
+  background: linear-gradient(180deg, #b4b4bb 0%, #8e8e95 50%, #6a6a71 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.2),
+    inset 0 -6px 14px rgba(0, 0, 0, 0.18),
+    0 14px 28px -10px rgba(0, 0, 0, 0.4),
+    0 2px 5px rgba(0, 0, 0, 0.12);
+}
+
+/* Iridescent halo behind a tile: pulses under a drag, turns slowly during a transfer. */
+.aura {
+  position: absolute;
+  inset: -15px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, var(--iri));
+  filter: blur(16px);
+  opacity: 0;
+  scale: 0.75;
+  pointer-events: none;
+  transition:
+    opacity 0.4s var(--ease),
+    scale 0.5s var(--soft-spring);
+}
+
+@keyframes aura-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes aura-pulse {
+  0%,
+  100% {
+    scale: 1;
+    opacity: 0.75;
+  }
+  50% {
+    scale: 1.14;
+    opacity: 1;
+  }
 }
 
 .me {
   position: absolute;
   left: 50%;
   top: var(--cy, 50%);
-  transform: translate(-50%, -48px);
+  transform: translate(-50%, -46px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -217,29 +389,35 @@ body.dragging .ripples span {
 }
 
 .me-avatar {
-  width: 96px;
-  height: 96px;
-  background: linear-gradient(160deg, var(--blue-2), var(--blue) 70%);
+  width: 92px;
+  height: 92px;
+}
+
+body.dragging .me .aura {
+  opacity: 0.45;
+  scale: 1;
+  animation: aura-spin 5s linear infinite;
 }
 
 .me-name,
 .me-name-input {
-  margin-top: 12px;
+  margin-top: 14px;
   font-family: var(--font-display);
   font-size: 15px;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.012em;
   max-width: 220px;
   text-align: center;
 }
 
 .me-name {
   padding: 2px 8px;
-  border-radius: 6px;
+  border-radius: 7px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   transition: background 0.15s;
+  -webkit-app-region: no-drag;
 }
 
 .me-name:hover {
@@ -250,22 +428,21 @@ body.dragging .ripples span {
   width: 200px;
   padding: 2px 8px;
   border: 0;
-  border-radius: 6px;
+  border-radius: 7px;
   color: var(--text);
-  background: var(--surface-strong);
+  background: var(--material-strong);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--blue) 40%, transparent);
   outline: none;
 }
 
 .me-caption {
-  margin-top: 2px;
+  margin-top: 1px;
   font-size: 12px;
   color: var(--text-2);
 }
 
-.me-avatar.gulp,
-.peer .avatar.gulp {
-  animation: gulp 0.5s var(--spring);
+.avatar.gulp {
+  animation: gulp 0.55s var(--spring);
 }
 
 @keyframes gulp {
@@ -273,7 +450,7 @@ body.dragging .ripples span {
     transform: scale(1);
   }
   35% {
-    transform: scale(0.9);
+    transform: scale(0.88);
   }
   70% {
     transform: scale(1.08);
@@ -287,7 +464,7 @@ body.dragging .ripples span {
 
 .peer {
   position: absolute;
-  width: 112px;
+  width: 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -299,7 +476,7 @@ body.dragging .ripples span {
 }
 
 .peer.enter {
-  animation: peer-in 0.55s var(--spring) both;
+  animation: peer-in 0.6s var(--spring) both;
 }
 
 .peer.leave {
@@ -324,41 +501,37 @@ body.dragging .ripples span {
 .peer .avatar {
   width: 76px;
   height: 76px;
-  transition:
-    transform 0.35s var(--spring),
-    box-shadow 0.25s;
 }
 
-.peer .avatar.darwin {
-  background: linear-gradient(160deg, #b8c1cc, #6e7781 75%);
+.peer:hover .tile {
+  scale: 1.05;
 }
 
-.peer .avatar.win32 {
-  background: linear-gradient(160deg, #a78bfa, #5e5ce6 75%);
+.peer:active .tile {
+  scale: 0.95;
+  transition-duration: 0.12s;
 }
 
-.peer .avatar.linux {
-  background: linear-gradient(160deg, #ffd60a, #ff9f0a 75%);
+body.dragging .peer .tile {
+  scale: 1.03;
 }
 
-.peer:hover .avatar {
-  transform: scale(1.05);
+.peer.target .tile {
+  scale: 1.16;
 }
 
-.peer:active .avatar {
-  transform: scale(0.96);
+.peer.target .aura {
+  opacity: 1;
+  scale: 1;
+  animation:
+    aura-spin 3s linear infinite,
+    aura-pulse 1.5s ease-in-out infinite;
 }
 
-body.dragging .peer .avatar {
-  transform: scale(1.04);
-}
-
-.peer.target .avatar {
-  transform: scale(1.16);
-  box-shadow:
-    0 0 0 4px color-mix(in srgb, var(--blue) 70%, transparent),
-    0 0 36px color-mix(in srgb, var(--blue) 55%, transparent),
-    var(--shadow-avatar);
+.peer.busy .aura {
+  opacity: var(--aura-busy);
+  scale: 0.95;
+  animation: aura-spin 5s linear infinite;
 }
 
 .ring {
@@ -379,7 +552,7 @@ body.dragging .peer .avatar {
 }
 
 .ring .track {
-  stroke: var(--fill);
+  stroke: color-mix(in srgb, var(--window) 55%, transparent);
 }
 
 .ring .bar {
@@ -411,11 +584,12 @@ body.dragging .peer .avatar {
 }
 
 .peer .name {
-  margin-top: 10px;
-  max-width: 112px;
+  margin-top: 12px;
+  max-width: 120px;
   font-weight: 600;
   font-size: 13px;
   line-height: 1.25;
+  letter-spacing: -0.008em;
   text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -446,29 +620,31 @@ body.dragging .peer .avatar {
 }
 
 .peer.cancellable:hover .status::after {
-  content: " · отменить";
+  content: " · Cancel";
   color: var(--text-2);
 }
 
 .badge {
   position: absolute;
-  right: -2px;
-  bottom: -2px;
+  right: -3px;
+  bottom: -3px;
   width: 26px;
   height: 26px;
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: var(--green);
+  background: linear-gradient(180deg, #4cd964, #28b446);
   color: #fff;
-  box-shadow: 0 0 0 3px var(--window);
+  box-shadow:
+    0 0 0 2.5px var(--window),
+    0 3px 8px rgba(0, 0, 0, 0.2);
   scale: 0;
-  transition: scale 0.4s var(--spring);
+  transition: scale 0.45s var(--spring);
 }
 
 body.material-vibrancy .badge,
 body.material-acrylic .badge {
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
 .badge svg {
@@ -486,19 +662,21 @@ body.material-acrylic .badge {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 22px;
+  bottom: 24px;
   text-align: center;
   padding: 0 32px;
   transition: opacity 0.3s;
 }
 
 .hint-title {
+  font-family: var(--font-display);
   font-size: 13px;
   font-weight: 600;
+  letter-spacing: -0.008em;
 }
 
 .hint-sub {
-  margin-top: 4px;
+  margin-top: 3px;
   font-size: 12px;
   color: var(--text-2);
   line-height: 1.4;
@@ -540,7 +718,7 @@ body.dragging .hint {
   justify-content: center;
   flex-wrap: wrap;
   gap: 6px;
-  padding: 10px 16px 14px;
+  padding: 11px 16px 13px;
   font-size: 12px;
   color: var(--text-2);
   border-top: 0.5px solid var(--hairline);
@@ -550,15 +728,20 @@ body.dragging .hint {
   color: var(--blue);
   font-weight: 500;
   border-radius: 4px;
+  -webkit-app-region: no-drag;
 }
 
 .link:hover {
-  text-decoration: underline;
+  color: var(--blue-hi);
 }
 
 .link.subtle {
   color: var(--text-2);
   font-weight: 400;
+}
+
+.link.subtle:hover {
+  color: var(--text);
 }
 
 .dot {
@@ -569,9 +752,9 @@ body.dragging .hint {
 
 .sheets {
   position: absolute;
-  left: 16px;
-  right: 16px;
-  bottom: 56px;
+  left: 14px;
+  right: 14px;
+  bottom: 54px;
   z-index: 5;
   display: flex;
   flex-direction: column;
@@ -581,14 +764,14 @@ body.dragging .hint {
 
 .sheet {
   pointer-events: auto;
-  padding: 16px;
-  border-radius: 18px;
-  background: var(--surface);
-  backdrop-filter: blur(30px) saturate(180%);
-  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  padding: 16px 16px 14px;
+  border-radius: 22px;
+  background: var(--material);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
   border: 0.5px solid var(--hairline);
-  box-shadow: var(--shadow);
-  animation: sheet-in 0.5s var(--spring) both;
+  box-shadow: var(--material-edge), var(--shadow);
+  animation: sheet-in 0.55s var(--soft-spring) both;
 }
 
 .sheet.out {
@@ -598,7 +781,7 @@ body.dragging .hint {
 @keyframes sheet-in {
   from {
     opacity: 0;
-    transform: translateY(24px) scale(0.96);
+    transform: translateY(28px) scale(0.95);
   }
 }
 
@@ -617,20 +800,17 @@ body.dragging .hint {
 
 .sheet-head .avatar {
   flex: none;
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
 }
 
-.sheet-head .avatar.darwin {
-  background: linear-gradient(160deg, #b8c1cc, #6e7781 75%);
-}
-
-.sheet-head .avatar.win32 {
-  background: linear-gradient(160deg, #a78bfa, #5e5ce6 75%);
-}
-
-.sheet-head .avatar.linux {
-  background: linear-gradient(160deg, #ffd60a, #ff9f0a 75%);
+.sheet-head .avatar.darwin,
+.sheet-head .avatar.win32,
+.sheet-head .avatar.other {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.16),
+    0 4px 10px -3px rgba(0, 0, 0, 0.35);
 }
 
 .sheet-text {
@@ -639,9 +819,11 @@ body.dragging .hint {
 }
 
 .sheet-title {
+  font-family: var(--font-display);
   font-weight: 600;
-  font-size: 13.5px;
+  font-size: 14px;
   line-height: 1.3;
+  letter-spacing: -0.01em;
 }
 
 .sheet-sub {
@@ -663,10 +845,11 @@ body.dragging .hint {
 
 .chip {
   max-width: 100%;
-  padding: 4px 9px;
+  padding: 4px 10px;
   border-radius: 999px;
   background: var(--fill);
   font-size: 11.5px;
+  font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -683,8 +866,8 @@ body.dragging .hint {
 }
 
 .check input {
-  width: 15px;
-  height: 15px;
+  width: 14px;
+  height: 14px;
   margin: 0;
   accent-color: var(--blue);
 }
@@ -698,67 +881,99 @@ body.dragging .hint {
 
 .btn {
   height: 34px;
-  border-radius: 10px;
+  border-radius: 11px;
   font-weight: 600;
   font-size: 13px;
+  letter-spacing: -0.005em;
   background: var(--fill);
   transition:
-    transform 0.15s,
+    transform 0.18s var(--soft-spring),
+    background 0.15s,
     filter 0.15s;
 }
 
 .btn:hover {
-  filter: brightness(1.04);
+  background: var(--fill-hover);
 }
 
 .btn:active {
   transform: scale(0.97);
+  filter: brightness(0.94);
 }
 
 .btn.primary {
-  background: var(--blue);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--blue-hi) 70%, var(--blue)), var(--blue));
   color: #fff;
+  box-shadow:
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.35),
+    0 4px 12px -4px color-mix(in srgb, var(--blue) 70%, transparent);
 }
 
-.btn.small {
-  height: 28px;
-  padding: 0 12px;
-  border-radius: 8px;
-  font-size: 12px;
+.btn.primary:hover {
+  filter: brightness(1.06);
+}
+
+.btn.primary:active {
+  filter: brightness(0.92);
 }
 
 .progress {
+  position: relative;
   height: 5px;
-  margin-top: 12px;
+  margin-top: 13px;
   border-radius: 99px;
   background: var(--fill);
   overflow: hidden;
 }
 
 .progress span {
+  position: relative;
   display: block;
   height: 100%;
   width: 0;
   border-radius: inherit;
-  background: linear-gradient(90deg, var(--blue-2), var(--blue));
+  background: linear-gradient(90deg, var(--blue-hi), var(--blue));
   transition: width 0.2s linear;
+  overflow: hidden;
+}
+
+/* A sheen that runs along the bar while it fills. */
+.progress span::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  translate: -100% 0;
+  animation: sheen 1.4s var(--ease) infinite;
+}
+
+@keyframes sheen {
+  to {
+    translate: 100% 0;
+  }
 }
 
 .sheet.done .progress span {
   background: var(--green);
 }
 
+.sheet.done .progress span::after {
+  display: none;
+}
+
 /* ---------- drag & drop ---------- */
 
 .drop-veil {
   position: fixed;
-  inset: 8px;
+  inset: 6px;
+  z-index: 4;
   border-radius: 16px;
-  border: 2px dashed color-mix(in srgb, var(--blue) 55%, transparent);
-  background: color-mix(in srgb, var(--blue) 5%, transparent);
+  box-shadow:
+    inset 0 0 0 1.5px color-mix(in srgb, var(--blue) 45%, transparent),
+    inset 0 0 60px color-mix(in srgb, var(--blue) 14%, transparent);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s;
+  transition: opacity 0.25s;
 }
 
 body.dragging .drop-veil {
@@ -768,19 +983,36 @@ body.dragging .drop-veil {
 .drop-label {
   position: absolute;
   left: 50%;
-  bottom: 72px;
+  bottom: 64px;
   max-width: calc(100% - 32px);
   overflow: hidden;
   text-overflow: ellipsis;
   transform: translateX(-50%);
-  padding: 8px 14px;
+  padding: 8px 15px;
   border-radius: 999px;
-  background: var(--blue);
-  color: #fff;
+  background: var(--material-strong);
+  backdrop-filter: blur(30px) saturate(180%);
+  border: 0.5px solid var(--hairline);
+  box-shadow: var(--material-edge), var(--shadow-small);
   font-weight: 600;
   font-size: 12.5px;
   white-space: nowrap;
-  box-shadow: 0 6px 20px color-mix(in srgb, var(--blue) 45%, transparent);
+}
+
+.fx {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* Under the sheets (5) so the wave passes behind cards, under the flying chip (10). */
+  z-index: 4;
+  pointer-events: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .fx {
+    mix-blend-mode: screen;
+  }
 }
 
 .flyer {
@@ -790,13 +1022,17 @@ body.dragging .drop-veil {
   z-index: 10;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 12px 8px 8px;
-  border-radius: 14px;
-  background: var(--surface-strong);
-  backdrop-filter: blur(20px);
-  box-shadow: var(--shadow);
+  gap: 9px;
+  padding: 7px 13px 7px 7px;
+  border-radius: 15px;
+  background: var(--material-strong);
+  backdrop-filter: blur(24px) saturate(180%);
   border: 0.5px solid var(--hairline);
+  box-shadow:
+    var(--material-edge),
+    0 0 0 1px rgba(139, 92, 255, 0.12),
+    0 10px 30px -6px rgba(61, 139, 255, 0.45),
+    var(--shadow-small);
   pointer-events: none;
   white-space: nowrap;
   font-weight: 600;
@@ -806,27 +1042,30 @@ body.dragging .drop-veil {
 .flyer .file {
   width: 28px;
   height: 34px;
-  border-radius: 5px;
-  background: linear-gradient(160deg, var(--blue-2), var(--blue));
+  border-radius: 6px;
+  background: linear-gradient(160deg, #5ac8fa, var(--blue));
+  box-shadow: inset 0 0.5px 0 rgba(255, 255, 255, 0.5);
   display: grid;
   place-items: center;
   color: #fff;
-  font-size: 11px;
+  font-size: 9.5px;
   font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 .toast {
   pointer-events: auto;
   align-self: center;
-  padding: 9px 14px;
+  max-width: 100%;
+  padding: 9px 16px;
   border-radius: 999px;
-  background: var(--surface-strong);
-  backdrop-filter: blur(20px);
-  box-shadow: var(--shadow);
+  background: var(--material-strong);
+  backdrop-filter: blur(30px) saturate(180%);
   border: 0.5px solid var(--hairline);
+  box-shadow: var(--material-edge), var(--shadow-small);
   font-size: 12.5px;
   font-weight: 500;
-  animation: sheet-in 0.45s var(--spring) both;
+  animation: sheet-in 0.45s var(--soft-spring) both;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -836,5 +1075,10 @@ body.dragging .drop-veil {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .peer.busy .aura,
+  .peer.target .aura {
+    animation: none !important;
   }
 }

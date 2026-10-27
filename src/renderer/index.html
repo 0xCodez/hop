@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta
@@ -13,19 +13,36 @@
   <body>
     <header class="titlebar">
       <div class="brand">
-        <span class="brand-mark" aria-hidden="true"></span>
+        <img class="brand-icon" src="../../build/icon.png" alt="" draggable="false" />
         <span>Hop</span>
+      </div>
+      <div class="theme-switch" id="themeSwitch" role="radiogroup" aria-label="Appearance">
+        <button role="radio" data-theme="system" title="Automatic" aria-label="Automatic">
+          <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 2.4a5.6 5.6 0 0 1 0 11.2z" fill="currentColor"/></svg>
+        </button>
+        <button role="radio" data-theme="light" title="Light" aria-label="Light">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="8" cy="8" r="2.9"/><path d="M8 1.6v1.3M8 13.1v1.3M1.6 8h1.3M13.1 8h1.3M3.5 3.5l.9.9M11.6 11.6l.9.9M3.5 12.5l.9-.9M11.6 4.4l.9-.9"/></svg>
+        </button>
+        <button role="radio" data-theme="dark" title="Dark" aria-label="Dark">
+          <svg viewBox="0 0 16 16"><path d="M13.6 10.1A6 6 0 0 1 5.9 2.4a6 6 0 1 0 7.7 7.7z" fill="currentColor"/></svg>
+        </button>
       </div>
     </header>
 
     <main class="stage" id="stage">
-      <div class="ripples" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="radar" aria-hidden="true">
+        <i class="orbit"></i><i class="orbit"></i>
+        <span class="wave"></span><span class="wave"></span><span class="wave"></span>
+      </div>
 
       <div class="me" id="me">
-        <div class="avatar me-avatar" id="meAvatar"></div>
-        <button class="me-name" id="meName" title="Нажмите, чтобы переименовать"></button>
+        <div class="tile">
+          <span class="aura"></span>
+          <div class="avatar me-avatar" id="meAvatar"></div>
+        </div>
+        <button class="me-name" id="meName" title="Click to rename"></button>
         <input class="me-name-input" id="meNameInput" maxlength="40" spellcheck="false" hidden />
-        <div class="me-caption">Это устройство</div>
+        <div class="me-caption" id="meCaption">This device</div>
       </div>
 
       <div class="peers" id="peers"></div>
@@ -39,10 +56,10 @@
     <section class="sheets" id="sheets" aria-live="polite"></section>
 
     <footer class="footer">
-      <span class="footer-label">Сохраняется в</span>
+      <span class="footer-label">Saving to</span>
       <button class="link" id="openDownloads"></button>
       <span class="dot">·</span>
-      <button class="link subtle" id="changeDir">Изменить</button>
+      <button class="link subtle" id="changeDir">Change…</button>
       <span class="dot" id="trustedDot" hidden>·</span>
       <button class="link subtle" id="forgetTrusted" hidden></button>
     </footer>
@@ -51,7 +68,11 @@
       <div class="drop-label" id="dropLabel"></div>
     </div>
 
+    <canvas class="fx" id="fxGl" aria-hidden="true"></canvas>
+    <canvas class="fx" id="fx2d" aria-hidden="true"></canvas>
+
     <script src="demo.js"></script>
+    <script src="fx.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
