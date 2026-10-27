@@ -4,7 +4,7 @@
 
 <p align="center">AirDrop-style file sharing between your Mac and your PC. Drag a file onto the other computer — hop, it's there.</p>
 
-<p align="center"><a href="https://0xcodez.github.io/hop/"><b>Download</b></a> · <a href="https://github.com/0xCodez/hop/releases">Releases</a></p>
+<p align="center"><a href="https://hop-drop.vercel.app/"><b>Download</b></a> · <a href="https://github.com/0xCodez/hop/releases">Releases</a></p>
 
 ## How it works
 
@@ -18,7 +18,7 @@ Files go straight from one computer to the other over your local network. No clo
 
 ## Install
 
-Download from the [website](https://0xcodez.github.io/hop/) or the [latest release](https://github.com/0xCodez/hop/releases/latest):
+Download from the [website](https://hop-drop.vercel.app/) or the [latest release](https://github.com/0xCodez/hop/releases/latest):
 
 | Platform | File |
 | --- | --- |
@@ -51,7 +51,7 @@ npm run dist       # build an installer for the current OS
 - UI screenshots with demo data: `npx electron scripts/screenshot.js out.png "demo=offer&platform=darwin" 1500 dark`.
 - Regenerate the icon: `npx electron scripts/render-icon.js`.
 
-Pushing a tag like `v0.2.0` builds the installers on GitHub Actions and publishes them as a release. The website in `site/` deploys to GitHub Pages on every push to `main`.
+Pushing a tag like `v0.2.0` builds the installers on GitHub Actions and publishes them as a release. The website in `site/` lives at [hop-drop.vercel.app](https://hop-drop.vercel.app/) — deploy it with `npx vercel deploy --prod --yes` from `site/`. A mirror deploys to GitHub Pages on every push to `main`.
 
 ## Under the hood
 
