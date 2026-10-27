@@ -51,7 +51,7 @@ npm run dist       # build an installer for the current OS
 - UI screenshots with demo data: `npx electron scripts/screenshot.js out.png "demo=offer&platform=darwin" 1500 dark`.
 - Regenerate the icon: `npx electron scripts/render-icon.js`.
 
-Pushing a tag like `v0.2.0` builds the installers on GitHub Actions and publishes them as a release. The website in `site/` lives at [hop-drop.vercel.app](https://hop-drop.vercel.app/) — deploy it with `npx vercel deploy --prod --yes` from `site/`. A mirror deploys to GitHub Pages on every push to `main`.
+Pushing a tag like `v0.2.0` builds the installers on GitHub Actions and publishes them as a release. The website in `site/` lives at [hop-drop.vercel.app](https://hop-drop.vercel.app/). Vercel (project root: `site`) and a GitHub Pages mirror both redeploy it on every push to `main`; `npx vercel deploy --prod --yes` from the repo root deploys it by hand.
 
 ## Under the hood
 
