@@ -220,6 +220,8 @@
       if (download) {
         const place = link.closest('#install') ? 'install' : link.closest('#top') ? 'hero' : link.closest('[data-cta]') ? 'footer' : 'other';
         track({ t: 'dl', k: download[1], w: place });
+      } else if (link.dataset.x) {
+        track({ t: 'click', k: `x-${link.dataset.x}` });
       } else if (/github\.com\/0xCodez\/hop\/releases\/?$/.test(link.href)) {
         track({ t: 'click', k: 'all-releases' });
       } else if (/github\.com\/0xCodez\/hop\/?$/.test(link.href)) {
@@ -240,6 +242,31 @@
       if (details.open) track({ t: 'click', k: `faq-${i + 1}` });
     });
   });
+
+  // ---------- Made by: live X profile ----------
+  // /api/x only exists on the Vercel deploy; elsewhere the card keeps its static text.
+  if (tracking) {
+    fetch('/api/x')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((profile) => {
+        if (!profile) return;
+        if (profile.name) document.getElementById('xName').textContent = profile.name;
+        // Only drop the badge if X positively says the account isn't verified.
+        if (profile.verified === false) document.getElementById('xBadge').style.display = 'none';
+        if (Number.isFinite(profile.followers)) {
+          const count = new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(profile.followers);
+          document.getElementById('xFollowers').textContent = ` · ${count} followers`;
+        }
+        if (profile.avatar) {
+          const img = document.getElementById('xAvatar');
+          img.onload = () => {
+            img.hidden = false;
+          };
+          img.src = profile.avatar;
+        }
+      })
+      .catch(() => {});
+  }
 
   // ---------- Nav hairline once the page scrolls ----------
   const nav = document.getElementById('nav');

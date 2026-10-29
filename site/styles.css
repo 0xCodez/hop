@@ -330,6 +330,31 @@ p {
   text-decoration: none;
 }
 
+/* X profile link in the nav. */
+.nav-x {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin-right: -14px;
+  border-radius: 50%;
+  color: var(--text);
+  opacity: 0.8;
+  transition:
+    opacity 0.2s,
+    background 0.2s;
+}
+
+.nav-x:hover {
+  opacity: 1;
+  background: var(--fill);
+}
+
+.nav-x .glyph {
+  width: 15px;
+  height: 15px;
+}
+
 /* Appearance switch: Auto / Light / Dark, a small segmented control like the app's. */
 .theme-switch {
   display: flex;
@@ -2835,6 +2860,197 @@ html:not(.js) .seg-thumb {
 
 .closer h2 {
   margin-bottom: 40px;
+}
+
+/* ---------- Made by (live X profile) ---------- */
+
+.creator {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 64px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.creator:hover {
+  text-decoration: none;
+}
+
+.creator-kicker {
+  color: var(--text-3);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.creator-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 12px 12px 12px;
+  border-radius: 999px;
+  background: var(--card);
+  box-shadow:
+    var(--card-shadow),
+    0 0 0 1px var(--hair);
+  transition:
+    transform 0.35s var(--ease-out),
+    box-shadow 0.35s var(--ease-out);
+}
+
+/* An iridescent rim fades in on hover, the site's "hop" colours. */
+.creator-row::before {
+  content: "";
+  position: absolute;
+  inset: -1.5px;
+  padding: 1.5px;
+  border-radius: inherit;
+  background: var(--iri);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-out);
+}
+
+.creator:hover .creator-row,
+.creator:focus-visible .creator-row {
+  transform: translateY(-3px);
+  box-shadow:
+    var(--float-shadow),
+    0 0 0 1px transparent;
+}
+
+.creator:hover .creator-row::before,
+.creator:focus-visible .creator-row::before {
+  opacity: 1;
+}
+
+.creator:focus-visible {
+  outline: none;
+}
+
+.creator-avatar {
+  position: relative;
+  flex: none;
+  width: 56px;
+  height: 56px;
+  padding: 2px;
+  border-radius: 50%;
+  background: var(--iri);
+}
+
+.creator-avatar img,
+.creator-initial {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid var(--card);
+  object-fit: cover;
+}
+
+.creator-initial {
+  background: linear-gradient(160deg, #3f5efb, #8a3ffc);
+  color: #fff;
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.creator-avatar img:not([hidden]) {
+  position: absolute;
+  inset: 2px;
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+}
+
+.creator-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  text-align: left;
+}
+
+.creator-name {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.creator-badge {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+
+.creator-meta {
+  color: var(--text-2);
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.creator-follow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 40px;
+  margin-left: 10px;
+  padding: 0 20px;
+  border-radius: 999px;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 15px;
+  font-weight: 600;
+  transition: transform 0.2s var(--ease-out);
+}
+
+.creator-follow .glyph {
+  width: 15px;
+  height: 15px;
+}
+
+.creator:active .creator-follow {
+  transform: scale(0.96);
+}
+
+@media (max-width: 480px) {
+  .creator-row {
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .creator-avatar {
+    width: 48px;
+    height: 48px;
+  }
+
+  .creator-follow {
+    margin-left: 2px;
+    padding: 0 14px;
+    height: 36px;
+    font-size: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .creator-row,
+  .creator-row::before {
+    transition: none;
+  }
 }
 
 /* ---------- Footer ---------- */
