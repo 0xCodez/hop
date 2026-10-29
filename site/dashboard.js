@@ -23,6 +23,8 @@
       'x-card': 'Opened X from the “Made by” card',
       'x-nav': 'Opened X from the menu',
       'x-footer': 'Opened X from the footer',
+      'tips-open': 'Opened the tip jar',
+      'tips-paid': 'Came back after tipping',
     },
     sources: { direct: 'Direct / unknown', x: 'X', 'hacker news': 'Hacker News' },
   };

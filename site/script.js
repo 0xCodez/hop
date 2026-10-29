@@ -268,6 +268,27 @@
       .catch(() => {});
   }
 
+  // ---------- Tips (Stripe via beyond-media.ai) ----------
+  // A floating "Support Hop" button; payments and the supporter list live on beyond-media.ai.
+  // Stripe sends people back here with ?tip=success, which the embed strips, so read it first.
+  const tipStatus = new URLSearchParams(location.search).get('tip');
+  if (tipStatus === 'success') track({ t: 'click', k: 'tips-paid' });
+  const tips = document.createElement('script');
+  tips.src = 'https://beyond-media.ai/tips/embed.js';
+  tips.async = true;
+  Object.assign(tips.dataset, { creator: 'hop', mode: 'button', label: 'Support Hop' });
+  // The card is built on first open, so keep its theme in step with the switch above.
+  const syncTipsTheme = () => {
+    tips.dataset.theme = document.documentElement.dataset.theme || 'auto';
+  };
+  syncTipsTheme();
+  new MutationObserver(syncTipsTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  document.body.appendChild(tips);
+  // The button sits in a shadow root, so a click only reaches us retargeted to its host.
+  document.addEventListener('click', (event) => {
+    if (event.composedPath().some((node) => node.classList && node.classList.contains('fab'))) track({ t: 'click', k: 'tips-open' });
+  });
+
   // ---------- Nav hairline once the page scrolls ----------
   const nav = document.getElementById('nav');
   const onScroll = () => nav.classList.toggle('scrolled', scrollY > 8);
